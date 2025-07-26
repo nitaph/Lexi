@@ -162,20 +162,17 @@ class ConversationsService {
 
     if (isPreConversation) {
       const metadata = await this.getConversationMetadata(conversationId);
-      if (
-        metadata.conversationStrategy &&
-        metadata.conversationStrategy !== "none"
-      ) {
-        const human = computeBigFiveRawScores(data);
-        const llm =
+      const human = computeBigFiveRawScores(data);
+      const fields: any = { humanPersonality: human };
+
+      if (metadata.conversationStrategy && metadata.conversationStrategy !== "none") {
+        fields.llmPersonality =
           metadata.conversationStrategy === "mirroring"
             ? human
             : complementRawScores(human);
-        await this.updateConversationMetadata(conversationId, {
-          humanPersonality: human,
-          llmPersonality: llm,
-        });
       }
+
+      await this.updateConversationMetadata(conversationId, fields);
     }
 
     return res;

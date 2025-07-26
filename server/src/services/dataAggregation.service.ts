@@ -271,22 +271,22 @@ class DataAggregationService {
                         agentTemplate: agent.condition.systemStarterPrompt,
                         conversationStrategy: conversation.metadata.conversationStrategy,
                         openness: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.openness * 10
+                            ? conversation.metadata.humanPersonality.openness
                             : undefined,
                         conscientiousness: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.conscientiousness * 10
+                            ? conversation.metadata.humanPersonality.conscientiousness
                             : undefined,
                         extraversion: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.extraversion * 10
+                            ? conversation.metadata.humanPersonality.extraversion
                             : undefined,
                         agreeableness: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.agreeableness * 10
+                            ? conversation.metadata.humanPersonality.agreeableness
                             : undefined,
                         neuroticism: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.neuroticism * 10
+                            ? conversation.metadata.humanPersonality.neuroticism
                             : undefined,
                         llmPersonality: conversation.metadata.llmPersonality
-                            ? `Openness: ${conversation.metadata.llmPersonality.openness * 10}, Conscientiousness: ${conversation.metadata.llmPersonality.conscientiousness * 10}, Extraversion: ${conversation.metadata.llmPersonality.extraversion * 10}, Agreeableness: ${conversation.metadata.llmPersonality.agreeableness * 10}, Neuroticism: ${conversation.metadata.llmPersonality.neuroticism * 10}`
+                            ? `Openness: ${conversation.metadata.llmPersonality.openness}, Conscientiousness: ${conversation.metadata.llmPersonality.conscientiousness}, Extraversion: ${conversation.metadata.llmPersonality.extraversion}, Agreeableness: ${conversation.metadata.llmPersonality.agreeableness}, Neuroticism: ${conversation.metadata.llmPersonality.neuroticism}`
                             : undefined,
                         surveySubmittedAt: conversation.metadata.postConversation?.submittedAt,
                         username: {
