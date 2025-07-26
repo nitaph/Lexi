@@ -1,165 +1,107 @@
-import { Request, Response } from 'express';
-import mongoose from 'mongoose';
-import { conversationsService } from '../services/conversations.service';
-import { requestHandler } from '../utils/requestHandler';
+import { Request, Response } from "express";
+import { requestHandler } from "../utils/requestHandler";
+import { ConversationsService } from "../services/conversations.service";
+import { Message } from "../types";
+import { SurveyAnswers } from "../types/IMetadataConversation.type";
 
-class ConvesationsController {
-    message = requestHandler(
-        async (req: Request, res: Response) => {
-            const { message, conversationId }: { message: any; conversationId: string } = req.body;
-            this.validateMessage(message.content);
+const conversationsService = new ConversationsService();
 
-            const savedResponse = await conversationsService.message(message, conversationId);
-            res.status(200).send(savedResponse);
-        },
-        (req, res, error) => {
-            if (error.code === 403) {
-                res.status(403).json({ message: 'Messages Limit Exceeded' });
-                return;
-            }
-            if (error.code === 'context_length_exceeded') {
-                res.status(400).json({ message: 'Message Is Too Long' });
-                return;
-            }
-            res.status(500).json({ message: 'Internal Server Error' });
-        },
+export class ConversationsController {
+  /**
+   * POST /conversations
+   * Create a new conversation for a user in an experiment.
+   */
+  createConversation = requestHandler(async (req: Request, res: Response) => {
+    const { userId, numberOfConversations, experimentId } = req.body as {
+      userId: string;
+      numberOfConversations: number;
+      experimentId: string;
+    };
+    const conversationId = await conversationsService.createConversation(
+      userId,
+      numberOfConversations,
+      experimentId
     );
+    res.status(201).json({ conversationId });
+  });
 
-    streamMessage = requestHandler(
-        async (req: Request, res: Response) => {
-            const conversationId = req.query.conversationId as string;
-            const role = req.query.role as string;
-            const content = req.query.content as string;
-            const message = { role, content };
-            this.validateMessage(message.content);
+  /**
+   * POST /conversations/:conversationId/message
+   * Wraps incoming content into a Message with a literal role 'user'.
+   */
+  sendMessage = requestHandler(async (req: Request, res: Response) => {
+    const conversationId = req.params.conversationId;
+    const { content } = req.body as { content: string };
+    const message: Message = { role: "user", content };
+    const saved = await conversationsService.message(message, conversationId);
+    res.status(200).json(saved);
+  });
 
-            res.writeHead(200, {
-                'Content-Type': 'text/event-stream',
-                'Cache-Control': 'no-cache',
-                Connection: 'keep-alive',
-            });
-
-            const streamResponse = async (partialMessage) => {
-                res.write(`data: ${JSON.stringify({ message: partialMessage })}\n\n`);
-            };
-
-            const closeStream = async (message) => {
-                res.write(`event: close\ndata: ${JSON.stringify(message)}\n\n`);
-                res.end();
-            };
-
-            const savedResponse = await conversationsService.message(message, conversationId, streamResponse);
-            closeStream(savedResponse);
-        },
-        (req, res, error) => {
-            if (error.code === 403) {
-                res.write(
-                    `data: ${JSON.stringify({
-                        error: { response: { status: 403, data: 'Messages Limit Exceeded' } },
-                    })}\n\n`,
-                );
-                res.end();
-                return;
-            }
-            if (error.code === 'context_length_exceeded') {
-                res.write(
-                    `data: ${JSON.stringify({
-                        error: { response: { status: 400, data: 'Message Is Too Long' } },
-                    })}\n\n`,
-                );
-                res.end();
-                return;
-            }
-            res.write(
-                `data: ${JSON.stringify({
-                    error: { response: { status: 500, data: 'Internal Server Error' } },
-                })}\n\n`,
-            );
-            res.end();
-        },
+  /**
+   * POST /conversations/:conversationId/survey
+   * Persists post-conversation survey answers (fields 1–50) in metadata.
+   */
+  saveSurvey = requestHandler(async (req: Request, res: Response) => {
+    const conversationId = req.params.conversationId;
+    const answers = req.body as SurveyAnswers;
+    await conversationsService.updateConversationSurveysData(
+      conversationId,
+      answers,
+      false
     );
+    res.status(200).json({ message: "Survey saved successfully." });
+  });
 
-    createConversation = requestHandler(
-        async (req: Request, res: Response) => {
-            const { userId, numberOfConversations, experimentId } = req.body;
-            const conversationId = await conversationsService.createConversation(
-                userId,
-                numberOfConversations,
-                experimentId,
-            );
-            res.cookie('conversationId', conversationId, {
-                secure: true,
-                sameSite: 'none',
-            });
-            res.status(200).send(conversationId);
-        },
-        (_, res, error) => {
-            if (error.code === 403) {
-                res.status(403).json({ message: 'Conversations Limit Exceeded' });
-                return;
-            }
-            res.status(500).json({ message: 'Internal Server Error' });
-        },
+  /**
+   * GET /conversations/user/:userId
+   * Retrieves all conversations and metadata for a user.
+   */
+  getUserConversations = requestHandler(async (req: Request, res: Response) => {
+    const userId = req.params.userId;
+    const data = await conversationsService.getUserConversations(userId);
+    res.status(200).json(data);
+  });
+
+  getConversationById = requestHandler(async (req: Request, res: Response) => {
+    const conversationId = req.params.conversationId;
+    const messages = await conversationsService.getConversation(
+      conversationId,
+      false
     );
+    res.status(200).json(messages);
+  });
 
-    getConversation = requestHandler(async (req: Request, res: Response) => {
-        const conversationId = req.query.conversationId as string;
+  /**
+   * PATCH /conversations/:conversationId/finish
+   * Marks a conversation finished and closes session if applicable.
+   */
+  finish = requestHandler(async (req: Request, res: Response) => {
+    const conversationId = req.params.conversationId;
+    const { experimentId, isAdmin } = req.body as {
+      experimentId: string;
+      isAdmin: boolean;
+    };
+    await conversationsService.finishConversation(
+      conversationId,
+      experimentId,
+      isAdmin
+    );
+    res.status(200).json({ message: "Conversation finished." });
+  });
 
-        if (!conversationId || !mongoose.Types.ObjectId.isValid(conversationId)) {
-            res.status(401).send('Invalid convesationId');
-            console.warn(`Invalid convesationId: ${conversationId}`);
-            return;
-        }
-
-        const conversation = await conversationsService.getConversation(conversationId);
-
-        res.status(200).send(conversation);
-    });
-
-    updateConversationMetadata = requestHandler(async (req: Request, res: Response) => {
-        const { conversationId, data, isPreConversation } = req.body;
-
-        await conversationsService.updateConversationSurveysData(conversationId, data, isPreConversation);
-
-        res.status(200).send();
-    });
-
-    finishConversation = requestHandler(async (req: Request, res: Response) => {
-        const { conversationId, experimentId, isAdmin } = req.body;
-
-        await conversationsService.finishConversation(conversationId, experimentId, isAdmin);
-
-        res.status(200).send();
-    });
-
-    updateUserAnnotation = requestHandler(async (req: Request, res: Response) => {
-        const { messageId, userAnnotation } = req.body;
-        await conversationsService.updateUserAnnotation(messageId, userAnnotation);
-
-        res.status(200).send();
-    });
-
-    private validateMessage(message: string): void {
-        if (typeof message !== 'string') {
-            const error = new Error('Bad Request');
-            error['code'] = 400;
-            throw error;
-        }
-
-        const tokenLimit = 4096;
-        const estimatedTokens = this.estimateTokenCount(message);
-
-        if (estimatedTokens > tokenLimit) {
-            const error = new Error('Message Is Too Long');
-            error['code'] = 'context_length_exceeded';
-            throw error;
-        }
-    }
-
-    private estimateTokenCount(message: string): number {
-        const charsPerToken = 4;
-        return Math.ceil(message.length / charsPerToken);
-    }
+  updateMetadata = requestHandler(async (req: Request, res: Response) => {
+    const { conversationId, data, isPreConversation } = req.body as {
+      conversationId: string;
+      data: object;
+      isPreConversation: boolean;
+    };
+    await conversationsService.updateConversationSurveysData(
+      conversationId,
+      data as any,
+      isPreConversation
+    );
+    res.status(200).json({ message: "Metadata updated." });
+  });
 }
 
-export const convesationsController = new ConvesationsController();
+export const conversationsController = new ConversationsController();

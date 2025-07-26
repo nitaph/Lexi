@@ -1,341 +1,416 @@
-import { agentsOptions, defaultSettings, defaultSliderSettings, initialSlidersEnabled } from '@DAL/constants';
-import { saveAgent, updateAgent } from '@DAL/server-requests/agents';
-import { ChipsInput } from '@components/common/ChipsInput';
-import { SnackbarStatus, useSnackbar } from '@contexts/SnackbarProvider';
-import { AgentType } from '@models/AppModels';
+// AgentForm.tsx
+
 import {
-    Box,
-    Checkbox,
-    CircularProgress,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    Slider,
-    TextField,
-    Typography,
-} from '@mui/material';
-import React, { useMemo, useState } from 'react';
-import { getExperimentsByAgent } from '../../../../../DAL/server-requests/experiments';
-import { updateUsersAgent } from '../../../../../DAL/server-requests/users';
-import { WarningMessage } from '../../../../../components/common/WarningMessasge';
-import { MainContainer, SaveButton } from './AgentForm.s';
+  agentsOptions,
+  defaultSettings,
+  defaultSliderSettings,
+  initialSlidersEnabled,
+} from "@DAL/constants";
+import { saveAgent, updateAgent } from "@DAL/server-requests/agents";
+import { fetchPersonalityScores } from "@DAL/server-requests/personality";
+import { ChipsInput } from "@components/common/ChipsInput";
+import { SnackbarStatus, useSnackbar } from "@contexts/SnackbarProvider";
+import { AgentType } from "@models/AppModels";
+import {
+  Box,
+  Checkbox,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Slider,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useMemo, useState } from "react";
+import { getExperimentsByAgent } from "@DAL/server-requests/experiments";
+import { updateUsersAgent } from "@DAL/server-requests/users";
+import { WarningMessage } from "@components/common/WarningMessasge";
+import { MainContainer, SaveButton } from "./AgentForm.s";
 
 interface AgentFormProps {
-    editAgent: any;
-    agents: AgentType[];
-    setAgents: (any) => void;
-    closeDialog: () => void;
-    isEditMode: boolean;
+  editAgent: AgentType | null;
+  agents: AgentType[];
+  setAgents: (agents: AgentType[]) => void;
+  closeDialog: () => void;
+  isEditMode: boolean;
 }
 
 const AgentForm: React.FC<AgentFormProps> = ({
-    editAgent,
-    agents,
-    setAgents,
-    closeDialog,
-    isEditMode = false,
+  editAgent,
+  agents,
+  setAgents,
+  closeDialog,
+  isEditMode,
 }) => {
-    const [isSaveLoading, setIsSaveLoading] = useState(false);
-    const [validationMessage, setValidationMessage] = useState('');
-    const [experimentsToUpdate, setExperimentsToUpdate] = useState([]);
-    const [updateUsersAgentMsg, setUpdateUsersAgentMsg] = useState(false);
-    const formTitle = useMemo(() => (!isEditMode ? 'New Agent' : 'Edit Agent'), []);
-    const [confirmExperimentUpdateMsg, setConfirmExperimentUpdateMsg] = useState(false);
+  const { openSnackbar } = useSnackbar();
+  const [isSaveLoading, setIsSaveLoading] = useState(false);
+  const [validationMessage, setValidationMessage] = useState("");
+  const [experimentsToUpdate, setExperimentsToUpdate] = useState([]);
+  const [updateUsersAgentMsg, setUpdateUsersAgentMsg] = useState(false);
+  const [confirmExperimentUpdateMsg, setConfirmExperimentUpdateMsg] =
+    useState(false);
 
-    const { openSnackbar } = useSnackbar();
-    const [slidersEnabled, setSlidersEnabled] = useState<any>(
-        isEditMode
-            ? {
-                  temperatureEnabled: editAgent.temperature !== null,
-                  maxTokensEnabled: editAgent.maxTokens !== null,
-                  topPEnabled: editAgent.topP !== null,
-                  frequencyPenaltyEnabled: editAgent.frequencyPenalty !== null,
-                  presencePenaltyEnabled: editAgent.presencePenalty !== null,
-              }
-            : initialSlidersEnabled,
-    );
+  const formTitle = useMemo(
+    () => (isEditMode ? "Edit Agent" : "New Agent"),
+    []
+  );
 
-    const [agent, setAgent] = useState<any>(editAgent ? editAgent : defaultSettings);
-    const updateAgentInList = (updatedAgent: AgentType) => {
-        const updatedSettings = agents.map((agent: AgentType) =>
-            agent._id === updatedAgent._id ? updatedAgent : agent,
-        );
-        setAgents(updatedSettings);
-    };
-
-    const validateAgent = (): boolean => {
-        let message = '';
-        if (!agent.title) message = 'Title is required.';
-        else if (!agent.model) message = 'Agent selection is required.';
-        else if (!agent.firstChatSentence) message = 'First Chat Sentence is required.';
-        else if (!agent.systemStarterPrompt) message = 'System Starter Prompt is required.';
-
-        setValidationMessage(message);
-        return !message;
-    };
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setAgent({ ...agent, [name]: value });
-    };
-
-    const handleConfirmUpdate = async () => {
-        if (!validateAgent()) return;
-
-        setIsSaveLoading(true);
-        try {
-            await updateAgent(agent);
-            updateAgentInList(agent);
-            openSnackbar('Agent Updated !', SnackbarStatus.SUCCESS);
-            setIsSaveLoading(false);
-            setUpdateUsersAgentMsg(true);
-            setConfirmExperimentUpdateMsg(false);
-        } catch (error) {
-            openSnackbar('Agent Update Failed', SnackbarStatus.ERROR);
-            setIsSaveLoading(false);
+  const [slidersEnabled, setSlidersEnabled] = useState(
+    isEditMode
+      ? {
+          temperatureEnabled: editAgent?.temperature !== null,
+          maxTokensEnabled: editAgent?.maxTokens !== null,
+          topPEnabled: editAgent?.topP !== null,
+          frequencyPenaltyEnabled: editAgent?.frequencyPenalty !== null,
+          presencePenaltyEnabled: editAgent?.presencePenalty !== null,
         }
-    };
+      : initialSlidersEnabled
+  );
 
-    const handleConfirmUsersUpdate = async () => {
-        setIsSaveLoading(true);
-        try {
-            await updateUsersAgent(agent);
-            openSnackbar('Users Agent Updated !', SnackbarStatus.SUCCESS);
-            setIsSaveLoading(false);
-            setUpdateUsersAgentMsg(false);
-            closeDialog();
-        } catch (error) {
-            openSnackbar('Users Update Failed', SnackbarStatus.ERROR);
-            setIsSaveLoading(false);
+  const [agent, setAgent] = useState<any>(
+    editAgent
+      ? {
+          ...editAgent,
+          personalityStrategy: editAgent.personalityStrategy || "none",
         }
-    };
+      : { ...defaultSettings, personalityStrategy: "none" }
+  );
 
-    const handleUpdate = async () => {
-        const experiments = await getExperimentsByAgent(agent._id);
-        if (experiments.length) {
-            setExperimentsToUpdate(experiments);
-            setConfirmExperimentUpdateMsg(true);
-            setIsSaveLoading(false);
-            return;
+  const validateAgent = (): boolean => {
+    let message = "";
+    if (!agent.title) message = "Title is required.";
+    else if (!agent.model) message = "Model is required.";
+    else if (!agent.firstChatSentence)
+      message = "First chat sentence is required.";
+    else if (!agent.systemStarterPrompt)
+      message = "System starter prompt is required.";
+    setValidationMessage(message);
+    return !message;
+  };
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setAgent({ ...agent, [name]: value });
+  };
+
+  const updateAgentInList = (updated: AgentType) => {
+    const newList = agents.map((a) => (a._id === updated._id ? updated : a));
+    setAgents(newList);
+  };
+
+  const handleConfirmUpdate = async () => {
+    if (!validateAgent()) return;
+    try {
+      await updateAgent(agent);
+      updateAgentInList(agent);
+      openSnackbar("Agent Updated!", SnackbarStatus.SUCCESS);
+      setUpdateUsersAgentMsg(true);
+      setConfirmExperimentUpdateMsg(false);
+    } catch {
+      openSnackbar("Agent update failed", SnackbarStatus.ERROR);
+    } finally {
+      setIsSaveLoading(false);
+    }
+  };
+
+  const handleConfirmUsersUpdate = async () => {
+    try {
+      await updateUsersAgent(agent);
+      openSnackbar("Users' agent updated", SnackbarStatus.SUCCESS);
+      closeDialog();
+    } catch {
+      openSnackbar("Failed to update users", SnackbarStatus.ERROR);
+    } finally {
+      setIsSaveLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!validateAgent()) return;
+    setIsSaveLoading(true);
+
+    try {
+      let agentToSave = {
+        ...agent,
+        personalityStrategy: agent.personalityStrategy || "none",
+      };
+
+      console.log("💾 Agent to save:", agentToSave);
+
+      // Inject personality traits only if needed
+      if (agent.personalityStrategy !== "none") {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+          console.warn(
+            "No user ID found in local storage. Skipping personality injection."
+          );
+        } else {
+          try {
+            const scores = await fetchPersonalityScores(userId);
+            const { createAgentFromPersonality } = await import(
+              "@utils/createAgentFromPersonality"
+            );
+            agentToSave = await createAgentFromPersonality(
+              agent,
+              scores,
+              agent.personalityStrategy
+            );
+          } catch (err) {
+            console.warn(
+              "No personality scores found for this user. Skipping personality injection."
+            );
+          }
         }
-        await updateAgent(agent);
-        updateAgentInList(agent);
-        openSnackbar('Agent Updated !', SnackbarStatus.SUCCESS);
-        closeDialog();
-    };
+      }
 
-    const handleSave = async () => {
-        if (!validateAgent()) return;
+      const saved = await saveAgent(agentToSave);
+      setAgents([...agents, saved]);
+      openSnackbar("Agent saved!", SnackbarStatus.SUCCESS);
+      closeDialog();
+    } catch (err) {
+      console.error("Error saving agent:", err);
+      openSnackbar("Failed to save agent", SnackbarStatus.ERROR);
+    } finally {
+      setIsSaveLoading(false);
+    }
+  };
 
-        setIsSaveLoading(true);
-        try {
-            if (!isEditMode) {
-                const savedAgent = await saveAgent(agent);
-                setAgents([...agents, savedAgent]);
-                openSnackbar('Agent Saved !', SnackbarStatus.SUCCESS);
-                closeDialog();
-            } else {
-                await handleUpdate();
-            }
-            setIsSaveLoading(false);
-        } catch (error) {
-            openSnackbar('Agent Saving Failed', SnackbarStatus.ERROR);
-            setIsSaveLoading(false);
-        }
-    };
-
-    const handleSliderChange = (newValue: number | number[], field: string) => {
-        setAgent({ ...agent, [field]: newValue });
-    };
-
-    const renderSlider = (
-        field: string,
-        name: string,
-        min: number,
-        max: number,
-        step: number,
-        enabled: boolean,
-    ) => (
-        <FormControl fullWidth margin="normal">
-            <Typography gutterBottom>{field.charAt(0).toUpperCase() + field.slice(1)}</Typography>
-            <Box display="flex" alignItems="center" gap={1}>
-                <Checkbox
-                    checked={enabled}
-                    onChange={(e) => {
-                        handleSliderChange(e.target.checked ? defaultSliderSettings[field] : null, field);
-                        setSlidersEnabled({
-                            ...slidersEnabled,
-                            [`${field}Enabled`]: e.target.checked,
-                        });
-                    }}
-                    name={`${field}Enabled`}
-                />
-                <Slider
-                    value={enabled && agent[field]}
-                    onChange={(e, newValue) => handleSliderChange(newValue, field)}
-                    min={min}
-                    max={max}
-                    step={step}
-                    valueLabelDisplay="auto"
-                    name={name}
-                    disabled={!enabled}
-                />
-            </Box>
-        </FormControl>
-    );
+  const renderSlider = (
+    field: string,
+    label: string,
+    min: number,
+    max: number,
+    step: number,
+    enabled: boolean
+  ) => {
+    const sliderValue = enabled
+      ? typeof agent[field] === "number"
+        ? agent[field]
+        : min
+      : min;
 
     return (
-        <MainContainer maxWidth="md" style={{ paddingBottom: '32px' }}>
-            <Typography variant="h4" gutterBottom margin="normal">
-                {formTitle}
-            </Typography>
-            <TextField
-                fullWidth
-                required
-                label="Title"
-                name="title"
-                value={agent.title}
-                onChange={handleChange}
-                size="small"
-                margin="normal"
-            />
-            <TextField
-                maxRows={3}
-                rows={3}
-                multiline
-                fullWidth
-                label="Summary"
-                name="summary"
-                value={agent.summary}
-                onChange={handleChange}
-                size="small"
-                margin="normal"
-            />
-            <FormControl fullWidth margin="normal" size="small" required>
-                <InputLabel id="agent-select-label">Model</InputLabel>
-                <Select
-                    labelId="agent-select-label"
-                    value={agent.model}
-                    onChange={handleChange}
-                    label="Model"
-                    name="model"
-                >
-                    {agentsOptions.map((agent) => (
-                        <MenuItem key={agent} value={agent}>
-                            {agent}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <TextField
-                fullWidth
-                required
-                multiline
-                maxRows={4}
-                rows={4}
-                label="First Chat Sentence"
-                name="firstChatSentence"
-                value={agent.firstChatSentence}
-                onChange={handleChange}
-                size="small"
-                margin="normal"
-            />
-            <TextField
-                fullWidth
-                required
-                multiline
-                maxRows={8}
-                rows={8}
-                label="System Starter Prompt"
-                name="systemStarterPrompt"
-                value={agent.systemStarterPrompt}
-                onChange={handleChange}
-                size="small"
-                margin="normal"
-            />
-            <TextField
-                fullWidth
-                label="Before User Sentence Prompt"
-                name="beforeUserSentencePrompt"
-                value={agent.beforeUserSentencePrompt}
-                onChange={handleChange}
-                size="small"
-                margin="normal"
-            />
-            <TextField
-                fullWidth
-                label="After User Sentence Prompt"
-                name="afterUserSentencePrompt"
-                value={agent.afterUserSentencePrompt}
-                onChange={handleChange}
-                size="small"
-                margin="normal"
-            />
-            {renderSlider('temperature', 'temperature', 0, 2, 0.01, slidersEnabled.temperatureEnabled)}
-            {renderSlider('maxTokens', 'max tokens', 1, 4096, 1, slidersEnabled.maxTokensEnabled)}
-            {renderSlider('topP', 'top p', 0, 1, 0.01, slidersEnabled.topPEnabled)}
-            {renderSlider(
-                'frequencyPenalty',
-                'frequency penalty',
-                0,
-                2,
-                0.01,
-                slidersEnabled.frequencyPenaltyEnabled,
-            )}
-            {renderSlider(
-                'presencePenalty',
-                'presence_penalty',
-                0,
-                2,
-                0.01,
-                slidersEnabled.presencePenaltyEnabled,
-            )}
-            <ChipsInput
-                list={agent.stopSequences}
-                setList={(stops) => setAgent({ ...agent, stopSequences: stops })}
-                id={'stop'}
-                label={'Stop Sequences'}
-            />
-            {confirmExperimentUpdateMsg ? (
-                <WarningMessage
-                    handleYes={handleConfirmUpdate}
-                    handleNO={() => setConfirmExperimentUpdateMsg(false)}
-                >
-                    This agent is attached to the following experiments:
-                    {experimentsToUpdate.map((experiment, index) => (
-                        <Typography
-                            key={experiment._id}
-                            component="span"
-                            display="inline"
-                            fontWeight="bold"
-                            style={{ marginRight: index < experimentsToUpdate.length - 1 && '8px' }}
-                        >
-                            {experiment.title}
-                            {index < experimentsToUpdate.length - 1 ? ',' : ''}
-                        </Typography>
-                    ))}
-                    . Are you sure you want to update the agent?
-                </WarningMessage>
-            ) : updateUsersAgentMsg ? (
-                <WarningMessage
-                    handleYes={handleConfirmUsersUpdate}
-                    handleNO={() => {
-                        closeDialog();
-                        openSnackbar('Agent Saved !', SnackbarStatus.SUCCESS);
-                    }}
-                >
-                    Do you want to update the agent also for users in the experiments that have already been
-                    attached to the agent?
-                </WarningMessage>
-            ) : (
-                <SaveButton variant="contained" color="primary" onClick={handleSave} style={{ marginBottom: 0 }}>
-                    {isSaveLoading ? <CircularProgress size={28} sx={{ color: 'white' }} /> : 'Save Agent'}
-                </SaveButton>
-            )}
-            {validationMessage && <Typography color="error">{validationMessage}</Typography>}
-        </MainContainer>
+      <FormControl fullWidth margin="normal">
+        <Typography gutterBottom>{label}</Typography>
+        <Box display="flex" alignItems="center" gap={1}>
+          <Checkbox
+            checked={enabled}
+            onChange={(e) => {
+              setAgent({
+                ...agent,
+                [field]: e.target.checked ? defaultSliderSettings[field] : null,
+              });
+              setSlidersEnabled({
+                ...slidersEnabled,
+                [`${field}Enabled`]: e.target.checked,
+              });
+            }}
+          />
+          <Slider
+            value={sliderValue}
+            onChange={(_, val) =>
+              setAgent({
+                ...agent,
+                [field]: typeof val === "number" ? val : min,
+              })
+            }
+            disabled={!enabled}
+            min={min}
+            max={max}
+            step={step}
+            valueLabelDisplay="auto"
+          />
+        </Box>
+      </FormControl>
     );
+  };
+
+  return (
+    <MainContainer maxWidth="md" style={{ paddingBottom: "32px" }}>
+      <Typography variant="h4" gutterBottom>
+        {formTitle}
+      </Typography>
+
+      <TextField
+        fullWidth
+        required
+        label="Title"
+        name="title"
+        value={agent.title}
+        onChange={handleChange}
+        margin="normal"
+        size="small"
+      />
+      <TextField
+        fullWidth
+        label="Summary"
+        name="summary"
+        value={agent.summary}
+        onChange={handleChange}
+        margin="normal"
+        size="small"
+        multiline
+        rows={2}
+      />
+      <FormControl fullWidth margin="normal" size="small" required>
+        <InputLabel id="model-label">Model</InputLabel>
+        <Select
+          labelId="model-label"
+          name="model"
+          value={agent.model}
+          onChange={handleChange}
+        >
+          {agentsOptions.map((model) => (
+            <MenuItem key={model} value={model}>
+              {model}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {/* Personality Strategy */}
+      <FormControl fullWidth margin="normal" size="small">
+        <InputLabel id="strategy-label">Personality Strategy</InputLabel>
+        <Select
+          labelId="strategy-label"
+          name="personalityStrategy"
+          value={agent.personalityStrategy || "none"}
+          onChange={handleChange}
+        >
+          <MenuItem value="none">None</MenuItem>
+          <MenuItem value="mirroring">Mirroring</MenuItem>
+          <MenuItem value="complementing">Complementing</MenuItem>
+        </Select>
+      </FormControl>
+
+      <TextField
+        fullWidth
+        required
+        label="First Chat Sentence"
+        name="firstChatSentence"
+        value={agent.firstChatSentence}
+        onChange={handleChange}
+        margin="normal"
+        size="small"
+        multiline
+        rows={2}
+      />
+      <TextField
+        fullWidth
+        required
+        label="System Starter Prompt"
+        name="systemStarterPrompt"
+        value={agent.systemStarterPrompt}
+        onChange={handleChange}
+        margin="normal"
+        size="small"
+        multiline
+        rows={6}
+      />
+      <TextField
+        fullWidth
+        label="Before User Sentence Prompt"
+        name="beforeUserSentencePrompt"
+        value={agent.beforeUserSentencePrompt}
+        onChange={handleChange}
+        margin="normal"
+        size="small"
+      />
+      <TextField
+        fullWidth
+        label="After User Sentence Prompt"
+        name="afterUserSentencePrompt"
+        value={agent.afterUserSentencePrompt}
+        onChange={handleChange}
+        margin="normal"
+        size="small"
+      />
+
+      {renderSlider(
+        "temperature",
+        "Temperature",
+        0,
+        2,
+        0.01,
+        slidersEnabled.temperatureEnabled
+      )}
+      {renderSlider(
+        "maxTokens",
+        "Max Tokens",
+        1,
+        4096,
+        1,
+        slidersEnabled.maxTokensEnabled
+      )}
+      {renderSlider("topP", "Top P", 0, 1, 0.01, slidersEnabled.topPEnabled)}
+      {renderSlider(
+        "frequencyPenalty",
+        "Frequency Penalty",
+        0,
+        2,
+        0.01,
+        slidersEnabled.frequencyPenaltyEnabled
+      )}
+      {renderSlider(
+        "presencePenalty",
+        "Presence Penalty",
+        0,
+        2,
+        0.01,
+        slidersEnabled.presencePenaltyEnabled
+      )}
+
+      <ChipsInput
+        list={agent.stopSequences}
+        setList={(stops) => setAgent({ ...agent, stopSequences: stops })}
+        id="stop"
+        label="Stop Sequences"
+      />
+
+      {confirmExperimentUpdateMsg ? (
+        <WarningMessage
+          handleYes={handleConfirmUpdate}
+          handleNO={() => setConfirmExperimentUpdateMsg(false)}
+        >
+          This agent is attached to the following experiments:
+          {experimentsToUpdate.map((e, i) => (
+            <Typography component="span" key={e._id}>
+              <b>{e.title}</b>
+              {i < experimentsToUpdate.length - 1 ? ", " : ""}
+            </Typography>
+          ))}
+          . Are you sure you want to update the agent?
+        </WarningMessage>
+      ) : updateUsersAgentMsg ? (
+        <WarningMessage
+          handleYes={handleConfirmUsersUpdate}
+          handleNO={() => {
+            closeDialog();
+            openSnackbar("Agent Saved !", SnackbarStatus.SUCCESS);
+          }}
+        >
+          Do you want to also update this agent for users in already-attached
+          experiments?
+        </WarningMessage>
+      ) : (
+        <SaveButton variant="contained" color="primary" onClick={handleSave}>
+          {isSaveLoading ? (
+            <CircularProgress size={28} sx={{ color: "white" }} />
+          ) : (
+            "Save Agent"
+          )}
+        </SaveButton>
+      )}
+
+      {validationMessage && (
+        <Typography color="error" marginTop={1}>
+          {validationMessage}
+        </Typography>
+      )}
+    </MainContainer>
+  );
 };
 
 export default AgentForm;

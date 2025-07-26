@@ -1,23 +1,23 @@
 /* styles.css */
 *::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  width: 8px;
+  height: 8px;
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: rgba(100, 100, 100, 0.5);
-    border-radius: 4px;
-    border: 1px solid #ffffff;
+  background-color: rgba(100, 100, 100, 0.5);
+  border-radius: 4px;
+  border: 1px solid #ffffff;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(100, 100, 100, 0.8);
+  background-color: rgba(100, 100, 100, 0.8);
 }
 
 *::-webkit-scrollbar-track {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 *::-webkit-scrollbar-track:window-inactive {
-    background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }

@@ -1,39 +1,45 @@
-import { UpdateWriteOpResult } from 'mongoose';
-import { IAgent, IAgentLean } from 'src/types';
-import { AgentsModel } from '../models/AgentsModel';
+import { UpdateWriteOpResult } from "mongoose";
+import { AgentsModel } from "../models/AgentsModel";
+import { IAgent, IAgentLean } from "src/types";
 
 class AgentsService {
-    saveAgent = async (settings: IAgent): Promise<IAgent> => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { _id, ...settingsWithNoId } = settings;
-        const response = await AgentsModel.create(settingsWithNoId);
-        const agent: IAgent = response.toObject();
-        return agent;
-    };
+  saveAgent = async (agentData: IAgent): Promise<IAgent> => {
+    console.log("💾 Saving agent data:", {
+      title: agentData.title,
+      openness: agentData.openness,
+      conscientiousness: agentData.conscientiousness,
+      extraversion: agentData.extraversion,
+      agreeableness: agentData.agreeableness,
+      neuroticism: agentData.neuroticism,
+    });
+    if (!agentData) {
+      throw new Error("saveAgent was called with undefined or null agentData.");
+    }
 
-    getAllAgents = async (): Promise<IAgent[]> => {
-        const agents: IAgent[] = await AgentsModel.find({});
-        return agents;
-    };
+    const { _id, ...agentToCreate } = agentData;
+    const response = await AgentsModel.create(agentToCreate);
+    return response.toObject();
+  };
 
-    getAgent = async (agentId: string): Promise<IAgent> => {
-        const agent: IAgent = await AgentsModel.findOne({ _id: agentId });
-        return agent;
-    };
+  getAllAgents = async (): Promise<IAgent[]> => {
+    return AgentsModel.find({});
+  };
 
-    getAgentLean = async (agentId: string): Promise<IAgentLean> => {
-        const agent: IAgentLean = await AgentsModel.findOne({ _id: agentId }, { _id: 1, title: 1 });
-        return agent;
-    };
+  getAgent = async (agentId: string): Promise<IAgent> => {
+    return AgentsModel.findOne({ _id: agentId });
+  };
 
-    updateAgents = async (agent: IAgent): Promise<UpdateWriteOpResult> => {
-        const response: UpdateWriteOpResult = await AgentsModel.updateOne({ _id: agent._id }, { $set: agent });
-        return response;
-    };
+  getAgentLean = async (agentId: string): Promise<IAgentLean> => {
+    return AgentsModel.findOne({ _id: agentId }, { _id: 1, title: 1 });
+  };
 
-    deleteAgent = async (agentId: string): Promise<void> => {
-        await AgentsModel.deleteOne({ _id: agentId });
-    };
+  updateAgents = async (agent: IAgent): Promise<UpdateWriteOpResult> => {
+    return AgentsModel.updateOne({ _id: agent._id }, { $set: agent });
+  };
+
+  deleteAgent = async (agentId: string): Promise<void> => {
+    await AgentsModel.deleteOne({ _id: agentId });
+  };
 }
 
 export const agentsService = new AgentsService();

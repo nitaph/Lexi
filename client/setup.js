@@ -22,26 +22,26 @@ const emojis = {
   console.log(
     colors.cyan,
     `${emojis.info} Starting setup process...`,
-    colors.reset
+    colors.reset,
   );
 
   const envContent = `
-    REACT_APP_API_URL="http://localhost:5000"
-    REACT_APP_FRONTEND_URL="http://localhost:3000"
-  `.trim();
+      REACT_APP_API_URL="http://localhost:5001"
+      REACT_APP_FRONTEND_URL="http://localhost:3000"
+    `.trim();
 
   fs.writeFileSync(".env", envContent);
 
   console.log(
     colors.green,
     `${emojis.success} .env file created successfully.`,
-    colors.reset
+    colors.reset,
   );
 
   console.log(
     colors.cyan,
     `${emojis.info} Installing dependencies...`,
-    colors.reset
+    colors.reset,
   );
   execSync("npm i", { stdio: "inherit" });
 

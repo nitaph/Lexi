@@ -95,7 +95,7 @@ This comprehensive setup ensures that all necessary components are correctly con
     cd server
     npm run dev
     ``` 
-**server will run on: http://localhost:5000**
+**server will run on: http://localhost:5001**
 
 Encountering difficulties with your local environment setup? Consult our [Troubleshooting Guide](TROUBLESHOOTING.md) for assistance in resolving your issues.
 

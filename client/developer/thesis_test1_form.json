@@ -1,0 +1,1457 @@
+{
+  "name": "thesis_test1",
+  "title": "Big Five Personality Test",
+  "instructions": "Please indicate how accurately each statement describes you.",
+  "questions": [
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am the life of the party.",
+        "fieldKey": "field1",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Feel little concern for others.",
+        "fieldKey": "field2",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am always prepared.",
+        "fieldKey": "field3",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Get stressed out easily.",
+        "fieldKey": "field4",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Have a rich vocabulary.",
+        "fieldKey": "field5",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Don't talk a lot.",
+        "fieldKey": "field6",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am interested in people.",
+        "fieldKey": "field7",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Leave my belongings around.",
+        "fieldKey": "field8",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am relaxed most of the time.",
+        "fieldKey": "field9",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Have difficulty understanding abstract ideas.",
+        "fieldKey": "field10",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Feel comfortable around people.",
+        "fieldKey": "field11",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Insult people.",
+        "fieldKey": "field12",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Pay attention to details.",
+        "fieldKey": "field13",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Worry about things.",
+        "fieldKey": "field14",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Have a vivid imagination.",
+        "fieldKey": "field15",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Keep in the background.",
+        "fieldKey": "field16",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Sympathize with others' feelings.",
+        "fieldKey": "field17",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Make a mess of things.",
+        "fieldKey": "field18",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Seldom feel blue.",
+        "fieldKey": "field19",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am not interested in abstract ideas.",
+        "fieldKey": "field20",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Start conversations.",
+        "fieldKey": "field21",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am not interested in other people's problems.",
+        "fieldKey": "field22",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Get chores done right away.",
+        "fieldKey": "field23",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am easily disturbed.",
+        "fieldKey": "field24",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Have excellent ideas.",
+        "fieldKey": "field25",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Have little to say.",
+        "fieldKey": "field26",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Have a soft heart.",
+        "fieldKey": "field27",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Often forget to put things back in their proper place.",
+        "fieldKey": "field28",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Get upset easily.",
+        "fieldKey": "field29",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Do not have a good imagination.",
+        "fieldKey": "field30",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Talk to a lot of different people at parties.",
+        "fieldKey": "field31",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am not really interested in others.",
+        "fieldKey": "field32",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Like order.",
+        "fieldKey": "field33",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Change my mood a lot.",
+        "fieldKey": "field34",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am quick to understand things.",
+        "fieldKey": "field35",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Don't like to draw attention to myself.",
+        "fieldKey": "field36",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Take time out for others.",
+        "fieldKey": "field37",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Shirk my duties.",
+        "fieldKey": "field38",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Have frequent mood swings.",
+        "fieldKey": "field39",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Use difficult words.",
+        "fieldKey": "field40",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Don't mind being the center of attention.",
+        "fieldKey": "field41",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Feel others' emotions.",
+        "fieldKey": "field42",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Follow a schedule.",
+        "fieldKey": "field43",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Get irritated easily.",
+        "fieldKey": "field44",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Spend time reflecting on things.",
+        "fieldKey": "field45",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am quiet around strangers.",
+        "fieldKey": "field46",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Make people feel at ease.",
+        "fieldKey": "field47",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am exacting in my work.",
+        "fieldKey": "field48",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Often feel blue.",
+        "fieldKey": "field49",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "radio-selection",
+      "props": {
+        "label": "Am full of ideas.",
+        "fieldKey": "field50",
+        "selectionOptions": [
+          {
+            "label": "Very Inaccurate",
+            "value": "1"
+          },
+          {
+            "label": "Moderately Inaccurate",
+            "value": "2"
+          },
+          {
+            "label": "Neither Accurate Nor Inaccurate",
+            "value": "3"
+          },
+          {
+            "label": "Moderately Accurate",
+            "value": "4"
+          },
+          {
+            "label": "Very Accurate",
+            "value": "5"
+          }
+        ]
+      }
+    }
+  ]
+}

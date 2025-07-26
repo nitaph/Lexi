@@ -1,15 +1,45 @@
-import { Schema } from 'mongoose';
-import { mongoDbProvider } from '../mongoDBProvider';
-import { IForm } from '../types';
+import { Schema } from "mongoose";
+import { mongoDbProvider } from "../mongoDBProvider";
+import { IForm } from "../types";
 
-export const formsScheme = new Schema<IForm>(
-    {
-        name: { type: String, required: true },
-        title: { type: String },
-        instructions: { type: String },
-        questions: Array<{ type: { type: string; required: true }; props: { type: object } }>,
-    },
-    { versionKey: false },
+const selectionOptionSchema = new Schema(
+  {
+    label: String,
+    value: String,
+  },
+  { _id: false }
 );
 
-export const FormsModel = mongoDbProvider.getModel('forms', formsScheme);
+const propsSchema = new Schema(
+  {
+    label: String,
+    fieldKey: String,
+    selectionOptions: [selectionOptionSchema],
+    left: String,
+    right: String,
+    range: Number,
+    min: Number,
+    max: Number,
+  },
+  { _id: false }
+);
+
+const questionSchema = new Schema(
+  {
+    type: { type: String, required: true },
+    props: propsSchema,
+  },
+  { _id: false }
+);
+
+const formsScheme = new Schema<IForm>(
+  {
+    name: { type: String, required: true },
+    title: { type: String },
+    instructions: { type: String },
+    questions: [questionSchema],
+  },
+  { versionKey: false }
+);
+
+export const FormsModel = mongoDbProvider.getModel("forms", formsScheme);

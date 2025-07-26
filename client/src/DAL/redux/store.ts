@@ -1,13 +1,15 @@
-import { AnyAction, configureStore } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import thunk, { ThunkDispatch } from 'redux-thunk';
-import activeUserReducer from './reducers/activeUserReducer';
+import { AnyAction, configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import thunk, { ThunkDispatch } from "redux-thunk";
+import activeUserReducer from "./reducers/activeUserReducer";
+import assignedAgentReducer from "./reducers/assignedAgentReducer";
 
 const store = configureStore({
-    reducer: {
-        activeUser: activeUserReducer,
-    },
-    middleware: [thunk],
+  reducer: {
+    activeUser: activeUserReducer,
+    assignedAgent: assignedAgentReducer, // ✅ Add this line
+  },
+  middleware: [thunk],
 });
 
 export type RootState = ReturnType<typeof store.getState>;

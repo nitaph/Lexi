@@ -1,13 +1,9 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "baseUrl": "./", 
-    "paths": { 
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": "",
+    "paths": {
       "@components/*": ["src/components/*"],
       "@utils/*": ["src/utils/*"],
       "@screens/*": ["src/screens/*"],
@@ -16,7 +12,7 @@
       "@DAL/*": ["src/DAL/*"],
       "@contexts/*": ["src/contexts/*"],
       "@app/*": ["src/app/*"],
-      "@root/*": ["src/*"],
+      "@root/*": ["src/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -31,7 +27,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
