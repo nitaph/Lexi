@@ -99,6 +99,10 @@ This comprehensive setup ensures that all necessary components are correctly con
   **server will run on: http://localhost:5001**
 
 Encountering difficulties with your local environment setup? Consult our [Troubleshooting Guide](TROUBLESHOOTING.md) for assistance in resolving your issues.
+## 📑 Sample Forms
+
+Sample forms in JSON format are available in the `forms` directory. You can import these into Lexi using the forms API or the admin panel.
+
 
 ## 🌐 Deployment
 
