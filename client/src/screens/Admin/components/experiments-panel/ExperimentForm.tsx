@@ -18,6 +18,7 @@ import { Controller, useForm } from 'react-hook-form';
 import StyledSelection from '../../../../components/common/StyledSelection';
 import { getFormErrorMessage } from '../../../../utils/commonFunctions';
 import { AbAgents } from '../agents-panel/active-agents/AbAgents';
+import MultiAgents from '../agents-panel/active-agents/MultiAgents';
 import { MainContainer, SaveButton } from '../agents-panel/agent-form/AgentForm.s';
 
 const ExperimentForm = ({
@@ -55,10 +56,15 @@ const ExperimentForm = ({
     const handleSave = async (data) => {
         setIsSaveLoading(true);
         try {
-            if (data.agentsMode === 'Single') {
+            if (data.agentsMode === AgentsModes.SINGLE) {
                 data.abAgents = null;
+                data.multiAgents = null;
+            } else if (data.agentsMode === AgentsModes.AB) {
+                data.activeAgent = null;
+                data.multiAgents = null;
             } else {
                 data.activeAgent = null;
+                data.abAgents = null;
             }
             const parsedExperiment = {
                 ...data,
@@ -66,6 +72,7 @@ const ExperimentForm = ({
                 maxMessages: !data.maxMessages ? null : Number(data.maxMessages),
                 maxConversations: !data.maxConversations ? null : Number(data.maxConversations),
                 maxParticipants: !data.maxParticipants ? null : Number(data.maxParticipants),
+                multiAgents: data.multiAgents?.map((a) => ({ agent: a.agent.toString(), dist: Number(a.dist) })),
                 isActive: data.isActive,
             };
             if (!isEditMode) {
@@ -133,7 +140,11 @@ const ExperimentForm = ({
                         <Select {...field} labelId="agent-mode-select-label" style={{ minWidth: '100px' }}>
                             {Object.values(AgentsModes).map((mode) => (
                                 <MenuItem key={mode} value={mode}>
-                                    {mode === AgentsModes.SINGLE ? 'Single Condition' : AgentsModes.AB}
+                                    {mode === AgentsModes.SINGLE
+                                        ? 'Single Condition'
+                                        : mode === AgentsModes.AB
+                                        ? AgentsModes.AB
+                                        : AgentsModes.MULTI}
                                 </MenuItem>
                             ))}
                         </Select>
@@ -166,8 +177,10 @@ const ExperimentForm = ({
                         <Typography color="error">{getFormErrorMessage(errors.activeAgent)}</Typography>
                     )}
                 </FormControl>
-            ) : (
+            ) : agentsMode === AgentsModes.AB ? (
                 <AbAgents agents={agents} control={control} setValue={setValue} isRow={false} errors={errors} />
+            ) : (
+                <MultiAgents agents={agents} control={control} register={register} errors={errors} watch={watch} />
             )}
             <Typography
                 style={{

@@ -7,6 +7,11 @@ export interface ABAgents {
     distB: number;
 }
 
+export interface MultiAgent {
+    agent: string;
+    dist: number;
+}
+
 export interface DisplaySettings {
     welcomeContent: string;
     welcomeHeader: string;
@@ -33,6 +38,7 @@ export interface IExperiment {
     agentsMode: string;
     activeAgent: string;
     abAgents: ABAgents;
+    multiAgents: MultiAgent[];
     createdAt: Date;
     timestamp: number;
     displaySettings: DisplaySettings;

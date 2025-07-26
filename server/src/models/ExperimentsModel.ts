@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 import { mongoDbProvider } from '../mongoDBProvider';
-import { ABAgents, IExperiment } from '../types';
+import { ABAgents, IExperiment, MultiAgent } from '../types';
 
 const AbAgentsSchema = new Schema<ABAgents>({
     distA: { type: Number, required: true },
@@ -9,11 +9,20 @@ const AbAgentsSchema = new Schema<ABAgents>({
     agentB: { type: String, required: true },
 });
 
+const MultiAgentSchema = new Schema<MultiAgent>(
+    {
+        agent: { type: String, required: true },
+        dist: { type: Number, required: true },
+    },
+    { _id: false },
+);
+
 export const experimentsSchema = new Schema<IExperiment>(
     {
         agentsMode: { type: String, required: true },
         activeAgent: { type: String },
         abAgents: { type: AbAgentsSchema },
+        multiAgents: { type: [MultiAgentSchema] },
         createdAt: { type: Date, default: Date.now },
         timestamp: { type: Number, default: () => Date.now() },
         displaySettings: { type: Object },

@@ -80,9 +80,17 @@ export type AbAgentsType = {
     distB: number;
 };
 
+export type MultiAgentType = {
+    agent: string;
+    dist: number;
+};
+
+export type MultiAgentsType = MultiAgentType[];
+
 export const AgentsModes = {
     SINGLE: 'Single',
     AB: 'A/B',
+    MULTI: 'Multi',
 } as const;
 
 export interface DisplaySettings {
@@ -95,6 +103,7 @@ export interface ExperimentType {
     agentsMode: string;
     activeAgent: string;
     abAgents: AbAgentsType;
+    multiAgents: MultiAgentsType;
     createdAt: Date;
     timestamp: number;
     welcomeText: string;
