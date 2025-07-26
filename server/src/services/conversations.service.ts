@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { OpenAI } from 'openai';
 import { IAgent, Message, UserAnnotation } from 'src/types';
+import { computeBigFiveScores, complementScores } from '../utils/bigFive';
 import { ConversationsModel } from '../models/ConversationsModel';
 import { MetadataConversationsModel } from '../models/MetadataConversationsModel';
 import { experimentsService } from './experiments.service';
@@ -66,9 +67,10 @@ class ConversationsService {
 
     createConversation = async (userId: string, userConversationsNumber: number, experimentId: string) => {
         let agent;
-        const [user, experimentBoundries] = await Promise.all([
+        const [user, experimentBoundries, experimentFeatures] = await Promise.all([
             usersService.getUserById(userId),
             experimentsService.getExperimentBoundries(experimentId),
+            experimentsService.getExperimentFeatures(experimentId),
         ]);
 
         if (
@@ -91,6 +93,7 @@ class ConversationsService {
             userId,
             agent: user.isAdmin ? agent : user.agent,
             maxMessages: user.isAdmin ? undefined : experimentBoundries.maxMessages,
+            conversationStrategy: experimentFeatures?.conversationStrategy || 'none',
         });
 
         const firstMessage: Message = {
@@ -119,6 +122,21 @@ class ConversationsService {
     updateConversationSurveysData = async (conversationId: string, data, isPreConversation: boolean) => {
         const saveField = isPreConversation ? { preConversation: data } : { postConversation: data };
         const res = await this.updateConversationMetadata(conversationId, saveField);
+
+        if (isPreConversation) {
+            const metadata = await this.getConversationMetadata(conversationId);
+            if (metadata.conversationStrategy && metadata.conversationStrategy !== 'none') {
+                const human = computeBigFiveScores(data);
+                const llm =
+                    metadata.conversationStrategy === 'mirroring'
+                        ? human
+                        : complementScores(human);
+                await this.updateConversationMetadata(conversationId, {
+                    humanPersonality: human,
+                    llmPersonality: llm,
+                });
+            }
+        }
 
         return res;
     };

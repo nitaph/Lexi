@@ -216,6 +216,21 @@ const ExperimentForm = ({
                     )}
                 />
             </Box>
+            <FormControl margin="dense" size="small" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
+                <Typography>Conversation Strategy:</Typography>
+                <Controller
+                    name="experimentFeatures.conversationStrategy"
+                    control={control}
+                    defaultValue="none"
+                    render={({ field }) => (
+                        <Select {...field} labelId="conversation-strategy" style={{ minWidth: '120px' }}>
+                            <MenuItem value="none">None</MenuItem>
+                            <MenuItem value="mirroring">Mirroring</MenuItem>
+                            <MenuItem value="complementing">Complementing</MenuItem>
+                        </Select>
+                    )}
+                />
+            </FormControl>
 
             <Typography
                 style={{

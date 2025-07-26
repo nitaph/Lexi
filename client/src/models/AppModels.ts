@@ -29,6 +29,9 @@ export interface MetadataConversationType {
     conversationNumber: number;
     agent: AgentType;
     userId: string;
+    conversationStrategy: 'none' | 'mirroring' | 'complementing';
+    humanPersonality?: Record<string, number>;
+    llmPersonality?: Record<string, number>;
 }
 
 export interface UserType {
@@ -129,6 +132,7 @@ export interface ExperimentLeanType {
 export interface ExperimentFeatures {
     userAnnotation: boolean;
     streamMessage: boolean;
+    conversationStrategy: 'none' | 'mirroring' | 'complementing';
 }
 
 export interface NewUserInfoType {
