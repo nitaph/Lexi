@@ -15,6 +15,7 @@ export interface IAgent {
     frequencyPenalty: number;
     presencePenalty: number;
     stopSequences: string[];
+    conversationStrategy: 'none' | 'mirroring' | 'complementing';
     createdAt: Date;
     timestamp: number;
 }

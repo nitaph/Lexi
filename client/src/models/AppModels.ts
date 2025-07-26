@@ -67,6 +67,7 @@ export interface AgentType {
     frequencyPenalty: number;
     presencePenalty: number;
     stopSequences: { value: string; id: string }[];
+    conversationStrategy: 'none' | 'mirroring' | 'complementing';
     createdAt?: Date;
     timestamp?: number;
 }
@@ -132,7 +133,6 @@ export interface ExperimentLeanType {
 export interface ExperimentFeatures {
     userAnnotation: boolean;
     streamMessage: boolean;
-    conversationStrategy: 'none' | 'mirroring' | 'complementing';
 }
 
 export interface NewUserInfoType {

@@ -25,6 +25,7 @@ export const defaultSettings: AgentType = {
     frequencyPenalty: null,
     presencePenalty: null,
     stopSequences: [],
+    conversationStrategy: 'none',
 };
 
 export const defaultAbAgents: AbAgentsType = {
@@ -60,7 +61,6 @@ export const defaultExperiment = {
     experimentFeatures: {
         userAnnotation: false,
         streamMessage: false,
-        conversationStrategy: 'none',
     },
 } as const;
 
