@@ -46,6 +46,16 @@ const getConversationColFields = () => {
     return new Set([
         'agent',
         'username',
+        'userId',
+        'agentTemplate',
+        'conversationStrategy',
+        'openness',
+        'conscientiousness',
+        'extraversion',
+        'agreeableness',
+        'neuroticism',
+        'llmPersonality',
+        'surveySubmittedAt',
         'conversationNumber',
         'messagesNumber',
         'createdAt',
@@ -84,7 +94,17 @@ const getUsersSheetCol = () => [
 
 const getConversationsSheetCol = () => [
     { header: 'Conversation ID', key: 'id' },
+    { header: 'User ID', key: 'userId' },
     { header: 'Agent', key: 'agent' },
+    { header: 'Agent Template', key: 'agentTemplate' },
+    { header: 'Personality Strategy', key: 'conversationStrategy' },
+    { header: 'Openness (50)', key: 'openness' },
+    { header: 'Conscientiousness (50)', key: 'conscientiousness' },
+    { header: 'Extraversion (50)', key: 'extraversion' },
+    { header: 'Agreeableness (50)', key: 'agreeableness' },
+    { header: 'Neuroticism (50)', key: 'neuroticism' },
+    { header: 'LLM Personality', key: 'llmPersonality' },
+    { header: 'Survey Submitted At', key: 'surveySubmittedAt' },
     { header: 'User', key: 'username' },
     { header: 'Conversation Number', key: 'conversationNumber' },
     { header: 'Number Of Messages', key: 'messagesNumber' },
@@ -243,10 +263,32 @@ class DataAggregationService {
                 user.conversations.forEach((conversation) => {
                     const conversationRow = {
                         id: conversation.metadata._id,
+                        userId: conversation.metadata.userId,
                         agent: {
                             text: agent.condition.title,
                             hyperlink: `#\'Agents\'!A${agentRowIndex + 1}`,
                         },
+                        agentTemplate: agent.condition.systemStarterPrompt,
+                        conversationStrategy: conversation.metadata.conversationStrategy,
+                        openness: conversation.metadata.humanPersonality
+                            ? conversation.metadata.humanPersonality.openness * 10
+                            : undefined,
+                        conscientiousness: conversation.metadata.humanPersonality
+                            ? conversation.metadata.humanPersonality.conscientiousness * 10
+                            : undefined,
+                        extraversion: conversation.metadata.humanPersonality
+                            ? conversation.metadata.humanPersonality.extraversion * 10
+                            : undefined,
+                        agreeableness: conversation.metadata.humanPersonality
+                            ? conversation.metadata.humanPersonality.agreeableness * 10
+                            : undefined,
+                        neuroticism: conversation.metadata.humanPersonality
+                            ? conversation.metadata.humanPersonality.neuroticism * 10
+                            : undefined,
+                        llmPersonality: conversation.metadata.llmPersonality
+                            ? `Openness: ${conversation.metadata.llmPersonality.openness * 10}, Conscientiousness: ${conversation.metadata.llmPersonality.conscientiousness * 10}, Extraversion: ${conversation.metadata.llmPersonality.extraversion * 10}, Agreeableness: ${conversation.metadata.llmPersonality.agreeableness * 10}, Neuroticism: ${conversation.metadata.llmPersonality.neuroticism * 10}`
+                            : undefined,
+                        surveySubmittedAt: conversation.metadata.postConversation?.submittedAt,
                         username: {
                             text: user.user.username,
                             hyperlink: `#\'Users\'!A${userRowIndex + 1}`,
