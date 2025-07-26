@@ -36,6 +36,7 @@ const createAdminUser = (username: string, password: string) => {
 
 const setupServer = () => {
   const app = express();
+  app.set("trust proxy", 1);
   app.use(bodyParser.json());
   const corsOptions = {
     origin: process.env.FRONTEND_URL,
