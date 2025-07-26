@@ -374,6 +374,133 @@ class DataAggregationService {
       agentRowIndex++;
     });
 
+    experimentData.agents.forEach((agent) => {
+      agentsSheet.addRow({
+        numParticipants: agent.numberOfParticipants,
+        conditionTitle: agent.condition.title,
+        summary: agent.condition.summary,
+        systemStarterPrompt: agent.condition.systemStarterPrompt,
+        beforeUserSentencePrompt: agent.condition.beforeUserSentencePrompt,
+        afterUserSentencePrompt: agent.condition.afterUserSentencePrompt,
+        firstChatSentence: agent.condition.firstChatSentence,
+        model: agent.condition.model,
+        temperature: agent.condition.temperature,
+        maxTokens: agent.condition.maxTokens,
+        topP: agent.condition.topP,
+        frequencyPenalty: agent.condition.frequencyPenalty,
+        presencePenalty: agent.condition.presencePenalty,
+        stopSequences: agent.condition.stopSequences,
+      });
+
+      agent.data.forEach((user) => {
+        const userRow = {
+          agent: {
+            text: agent.condition.title,
+            hyperlink: `#\'Agents\'!A${agentRowIndex + 1}`,
+          },
+          username: user.user.username,
+          numberOfConversations: user.numberOfConversations,
+          age: user.user.age,
+          gender: user.user.gender,
+          createdAt: user.user.createdAt,
+        };
+
+        Object.entries(user.user).forEach(([key, value]) => {
+          if (!userStaticFields.has(key)) {
+            userRow[key] = value;
+          }
+        });
+
+        usersSheet.addRow(userRow);
+        user.conversations.forEach((conversation) => {
+          const human =
+            conversation.metadata.humanPersonality ||
+            (conversation.metadata.preConversation
+              ? computeBigFiveRawScores(
+                  conversation.metadata.preConversation as any
+                )
+              : undefined);
+
+          const conversationRow = {
+            id: conversation.metadata._id,
+            userId: conversation.metadata.userId,
+            agent: {
+              text: agent.condition.title,
+              hyperlink: `#\'Agents\'!A${agentRowIndex + 1}`,
+            },
+            agentTemplate: agent.condition.systemStarterPrompt,
+            conversationStrategy: conversation.metadata.conversationStrategy,
+            openness: human?.openness,
+            conscientiousness: human?.conscientiousness,
+            extraversion: human?.extraversion,
+            agreeableness: human?.agreeableness,
+            neuroticism: human?.neuroticism,
+            llmPersonality: conversation.metadata.llmPersonality
+              ? `Openness: ${conversation.metadata.llmPersonality.openness}, Conscientiousness: ${conversation.metadata.llmPersonality.conscientiousness}, Extraversion: ${conversation.metadata.llmPersonality.extraversion}, Agreeableness: ${conversation.metadata.llmPersonality.agreeableness}, Neuroticism: ${conversation.metadata.llmPersonality.neuroticism}`
+              : undefined,
+            surveySubmittedAt:
+              conversation.metadata.postConversation?.submittedAt,
+            username: {
+              text: user.user.username,
+              hyperlink: `#\'Users\'!A${userRowIndex + 1}`,
+            },
+            conversationNumber: conversation.metadata.conversationNumber,
+            messagesNumber: conversation.metadata.messagesNumber,
+            createdAt: conversation.metadata.createdAt,
+            lastMessageDate: conversation.metadata.lastMessageDate,
+            isFinished: conversation.metadata.isFinished,
+          };
+
+          if (conversation.metadata.preConversation) {
+            Object.entries(conversation.metadata.preConversation).forEach(
+              ([key, value]) => {
+                conversationRow[`pre_${key}`] = value;
+              }
+            );
+          }
+
+          if (conversation.metadata.postConversation) {
+            Object.entries(conversation.metadata.postConversation).forEach(
+              ([key, value]) => {
+                conversationRow[`post_${key}`] = value;
+              }
+            );
+          }
+
+          conversationsSheet.addRow(conversationRow);
+
+          conversation.conversation.forEach((message) => {
+            messagesSheet.addRow({
+              conversationId: {
+                text: conversation.metadata._id,
+                hyperlink: `#\'Conversations\'!A${conversationRowIndex + 1}`,
+              },
+              messageId: message._id,
+              agent: {
+                text: agent.condition.title,
+                hyperlink: `#\'Agents\'!A${agentRowIndex + 1}`,
+              },
+              username: {
+                text: user.user.username,
+                hyperlink: `#\'Users\'!A${userRowIndex + 1}`,
+              },
+              conversationNumber: conversation.metadata.conversationNumber,
+              content: message.content,
+              role: message.role,
+              createdAt: message.createdAt,
+              messageNumber: message.messageNumber,
+              userAnnotation: message.userAnnotation,
+            });
+          });
+
+          conversationRowIndex++;
+        });
+
+        userRowIndex++;
+      });
+      agentRowIndex++;
+    });
+
     return workbook;
   };
 }
