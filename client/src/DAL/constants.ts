@@ -60,6 +60,7 @@ export const defaultExperiment = {
     experimentFeatures: {
         userAnnotation: false,
         streamMessage: false,
+        conversationStrategy: 'none',
     },
 } as const;
 

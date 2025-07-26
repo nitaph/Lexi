@@ -23,9 +23,12 @@ export interface ExperimentForms {
     postConversation: string;
 }
 
+export type ConversationStrategy = 'none' | 'mirroring' | 'complementing';
+
 export interface ExperimentFeatures {
     userAnnotation: boolean;
     streamMessage: boolean;
+    conversationStrategy: ConversationStrategy;
 }
 
 export interface IExperimentLean {

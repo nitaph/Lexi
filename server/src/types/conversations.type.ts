@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { IAgent } from '../types/agents.type';
+import { BigFiveScores, ConversationStrategy } from '../types';
 
 export type UserAnnotation = 1 | 0 | -1;
 export interface IConversation {
@@ -32,6 +33,9 @@ export interface IMetadataConversation {
     userId: string;
     preConversation?: object;
     postConversation?: object;
+    conversationStrategy: ConversationStrategy;
+    humanPersonality?: BigFiveScores;
+    llmPersonality?: BigFiveScores;
     maxMessages: number;
     isFinished: boolean;
 }
