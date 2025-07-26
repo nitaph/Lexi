@@ -279,11 +279,13 @@ class DataAggregationService {
                         },
                         agentTemplate: agent.condition.systemStarterPrompt,
                         conversationStrategy: conversation.metadata.conversationStrategy,
+
                         openness: human?.openness,
                         conscientiousness: human?.conscientiousness,
                         extraversion: human?.extraversion,
                         agreeableness: human?.agreeableness,
                         neuroticism: human?.neuroticism,
+
                         llmPersonality: conversation.metadata.llmPersonality
                             ? `Openness: ${conversation.metadata.llmPersonality.openness}, Conscientiousness: ${conversation.metadata.llmPersonality.conscientiousness}, Extraversion: ${conversation.metadata.llmPersonality.extraversion}, Agreeableness: ${conversation.metadata.llmPersonality.agreeableness}, Neuroticism: ${conversation.metadata.llmPersonality.neuroticism}`
                             : undefined,
