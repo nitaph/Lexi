@@ -297,6 +297,20 @@ const AgentForm: React.FC<AgentFormProps> = ({
                 id={'stop'}
                 label={'Stop Sequences'}
             />
+            <FormControl fullWidth margin="normal" size="small">
+                <InputLabel id="conversation-strategy-label">Conversation Strategy</InputLabel>
+                <Select
+                    labelId="conversation-strategy-label"
+                    value={agent.conversationStrategy}
+                    label="Conversation Strategy"
+                    name="conversationStrategy"
+                    onChange={handleChange}
+                >
+                    <MenuItem value="none">None</MenuItem>
+                    <MenuItem value="mirroring">Mirroring</MenuItem>
+                    <MenuItem value="complementing">Complementing</MenuItem>
+                </Select>
+            </FormControl>
             {confirmExperimentUpdateMsg ? (
                 <WarningMessage
                     handleYes={handleConfirmUpdate}

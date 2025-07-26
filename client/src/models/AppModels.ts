@@ -29,6 +29,9 @@ export interface MetadataConversationType {
     conversationNumber: number;
     agent: AgentType;
     userId: string;
+    conversationStrategy: 'none' | 'mirroring' | 'complementing';
+    humanPersonality?: Record<string, number>;
+    llmPersonality?: Record<string, number>;
 }
 
 export interface UserType {
@@ -64,6 +67,7 @@ export interface AgentType {
     frequencyPenalty: number;
     presencePenalty: number;
     stopSequences: { value: string; id: string }[];
+    conversationStrategy: 'none' | 'mirroring' | 'complementing';
     createdAt?: Date;
     timestamp?: number;
 }
