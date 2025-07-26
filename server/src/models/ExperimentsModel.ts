@@ -43,7 +43,6 @@ export const experimentsSchema = new Schema<IExperiment>(
         experimentFeatures: {
             userAnnotation: { type: Boolean },
             streamMessage: { type: Boolean },
-            conversationStrategy: { type: String, default: 'none' },
         },
     },
     { versionKey: false },

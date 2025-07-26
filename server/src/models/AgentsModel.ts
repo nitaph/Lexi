@@ -17,6 +17,7 @@ export const agentsSchema = new Schema<IAgent>(
         frequencyPenalty: { type: Number },
         presencePenalty: { type: Number },
         stopSequences: { type: [String] },
+        conversationStrategy: { type: String, default: 'none' },
         createdAt: { type: Date, default: Date.now },
         timestamp: { type: Number, default: () => Date.now() },
     },

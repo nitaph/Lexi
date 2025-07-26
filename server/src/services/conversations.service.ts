@@ -67,10 +67,9 @@ class ConversationsService {
 
     createConversation = async (userId: string, userConversationsNumber: number, experimentId: string) => {
         let agent;
-        const [user, experimentBoundries, experimentFeatures] = await Promise.all([
+        const [user, experimentBoundries] = await Promise.all([
             usersService.getUserById(userId),
             experimentsService.getExperimentBoundries(experimentId),
-            experimentsService.getExperimentFeatures(experimentId),
         ]);
 
         if (
@@ -93,7 +92,7 @@ class ConversationsService {
             userId,
             agent: user.isAdmin ? agent : user.agent,
             maxMessages: user.isAdmin ? undefined : experimentBoundries.maxMessages,
-            conversationStrategy: experimentFeatures?.conversationStrategy || 'none',
+            conversationStrategy: (user.isAdmin ? agent : user.agent).conversationStrategy || 'none',
         });
 
         const firstMessage: Message = {
