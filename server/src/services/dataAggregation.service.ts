@@ -2,6 +2,7 @@ import ExcelJS from 'exceljs';
 import { conversationsService } from './conversations.service';
 import { experimentsService } from './experiments.service';
 import { usersService } from './users.service';
+import { computeBigFiveRawScores } from '../utils/bigFive';
 
 const mainSheetCol = [
     { header: 'Agents Mode', key: 'agentsMode' },
@@ -261,6 +262,14 @@ class DataAggregationService {
 
                 usersSheet.addRow(userRow);
                 user.conversations.forEach((conversation) => {
+                    const human =
+                        conversation.metadata.humanPersonality ||
+                        (conversation.metadata.preConversation
+                            ? computeBigFiveRawScores(
+                                  conversation.metadata.preConversation as any
+                              )
+                            : undefined);
+
                     const conversationRow = {
                         id: conversation.metadata._id,
                         userId: conversation.metadata.userId,
@@ -270,21 +279,13 @@ class DataAggregationService {
                         },
                         agentTemplate: agent.condition.systemStarterPrompt,
                         conversationStrategy: conversation.metadata.conversationStrategy,
-                        openness: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.openness
-                            : undefined,
-                        conscientiousness: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.conscientiousness
-                            : undefined,
-                        extraversion: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.extraversion
-                            : undefined,
-                        agreeableness: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.agreeableness
-                            : undefined,
-                        neuroticism: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.neuroticism
-                            : undefined,
+
+                        openness: human?.openness,
+                        conscientiousness: human?.conscientiousness,
+                        extraversion: human?.extraversion,
+                        agreeableness: human?.agreeableness,
+                        neuroticism: human?.neuroticism,
+
                         llmPersonality: conversation.metadata.llmPersonality
                             ? `Openness: ${conversation.metadata.llmPersonality.openness}, Conscientiousness: ${conversation.metadata.llmPersonality.conscientiousness}, Extraversion: ${conversation.metadata.llmPersonality.extraversion}, Agreeableness: ${conversation.metadata.llmPersonality.agreeableness}, Neuroticism: ${conversation.metadata.llmPersonality.neuroticism}`
                             : undefined,
