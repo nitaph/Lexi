@@ -11,6 +11,7 @@ interface ExperimentDetailsProps {
     experimentAgentDetails: {
         activeAgent: AgentLeanType | null;
         abAgents: { agentA: AgentLeanType; agentB: AgentLeanType } | null;
+        multiAgents: { agent: AgentLeanType; dist: number }[] | null;
     };
     setExperimentAgentDetails: (experimentAgentDetails) => void;
 }
@@ -28,19 +29,26 @@ export const ExperimentDetails: React.FC<ExperimentDetailsProps> = ({
             !experimentAgentDetails ||
             (experimentAgentDetails.activeAgent && experimentAgentDetails.activeAgent._id !== row?.activeAgent) ||
             experimentAgentDetails.abAgents?.agentA?._id !== row?.abAgents?.agentA ||
-            experimentAgentDetails.abAgents?.agentB?._id !== row?.abAgents?.agentB
+            experimentAgentDetails.abAgents?.agentB?._id !== row?.abAgents?.agentB ||
+            (experimentAgentDetails.multiAgents &&
+                JSON.stringify(experimentAgentDetails.multiAgents.map((m) => ({ agent: m.agent._id, dist: m.dist }))) !==
+                    JSON.stringify(row?.multiAgents))
         ) {
             setIsLoading(true);
             try {
                 if (row.agentsMode === AgentsModes.SINGLE) {
                     const agent = await getAgentLean(row.activeAgent);
-                    setExperimentAgentDetails({ activeAgent: agent, abAgents: null });
-                } else {
+                    setExperimentAgentDetails({ activeAgent: agent, abAgents: null, multiAgents: null });
+                } else if (row.agentsMode === AgentsModes.AB) {
                     const [agentA, agentB] = await Promise.all([
                         getAgentLean(row.abAgents.agentA),
                         getAgentLean(row.abAgents.agentB),
                     ]);
-                    setExperimentAgentDetails({ abAgents: { agentA, agentB }, activeAgent: null });
+                    setExperimentAgentDetails({ abAgents: { agentA, agentB }, activeAgent: null, multiAgents: null });
+                } else {
+                    const agents = await Promise.all(row.multiAgents.map((ma) => getAgentLean(ma.agent)));
+                    const mapped = agents.map((agent, idx) => ({ agent, dist: row.multiAgents[idx].dist }));
+                    setExperimentAgentDetails({ activeAgent: null, abAgents: null, multiAgents: mapped });
                 }
             } catch (error) {
                 openSnackbar(
@@ -74,7 +82,7 @@ export const ExperimentDetails: React.FC<ExperimentDetailsProps> = ({
                             Active Agent: <strong>{experimentAgentDetails?.activeAgent?.title}</strong>
                         </TypographyStyled>
                     </Grid>
-                ) : (
+                ) : row.agentsMode === AgentsModes.AB ? (
                     <GridItemStyled item>
                         <Grid item>
                             <TypographyStyled variant="subtitle1" color="textSecondary">
@@ -88,6 +96,16 @@ export const ExperimentDetails: React.FC<ExperimentDetailsProps> = ({
                                 <strong>{`${experimentAgentDetails?.abAgents?.agentB.title} (${row.abAgents.distB}%)`}</strong>
                             </TypographyStyled>
                         </Grid>
+                    </GridItemStyled>
+                ) : (
+                    <GridItemStyled item>
+                        {experimentAgentDetails?.multiAgents?.map((ma, idx) => (
+                            <Grid key={idx} item>
+                                <TypographyStyled variant="subtitle1" color="textSecondary">
+                                    {ma.agent.title}: <strong>{`${ma.dist}%`}</strong>
+                                </TypographyStyled>
+                            </Grid>
+                        ))}
                     </GridItemStyled>
                 )}
             </GridContainerStyled>

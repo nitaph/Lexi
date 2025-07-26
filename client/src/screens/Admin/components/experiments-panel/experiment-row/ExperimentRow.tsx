@@ -21,6 +21,7 @@ export const ExperimentRow: React.FC<ExperimentRowProps> = ({ row, onStatusChang
     const [experimentAgentDetails, setExperimentAgentDetails] = useState<{
         activeAgent: AgentLeanType | null;
         abAgents: { agentA: AgentLeanType; agentB: AgentLeanType } | null;
+        multiAgents: { agent: AgentLeanType; dist: number }[] | null;
     }>(null);
 
     const timeAgo = (timestamp: number) => {

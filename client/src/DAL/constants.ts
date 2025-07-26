@@ -1,4 +1,4 @@
-import { AbAgentsType, AgentType, FormType } from '@models/AppModels';
+import { AbAgentsType, AgentType, FormType, MultiAgentsType } from '@models/AppModels';
 
 export const defaultSliderSettings = {
     temperature: 1,
@@ -34,12 +34,15 @@ export const defaultAbAgents: AbAgentsType = {
     distB: 50,
 } as const;
 
+export const defaultMultiAgents: MultiAgentsType = [];
+
 export const defaultExperiment = {
     title: '',
     description: '',
     agentsMode: 'Single',
     activeAgent: null,
     abAgents: null,
+    multiAgents: defaultMultiAgents,
     isActive: true,
     maxMessages: undefined,
     maxConversations: undefined,

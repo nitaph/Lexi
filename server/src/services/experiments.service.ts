@@ -89,12 +89,22 @@ class ExperimentsService {
         let agentId;
         if (experiment.agentsMode === AgentsMode.SINGLE) {
             agentId = experiment.activeAgent;
-        } else {
+        } else if (experiment.agentsMode === AgentsMode.AB) {
             const rand = Math.random() * 100;
             if (experiment.abAgents.distA >= rand) {
                 agentId = experiment.abAgents.agentA;
             } else {
                 agentId = experiment.abAgents.agentB;
+            }
+        } else {
+            const rand = Math.random() * 100;
+            let sum = 0;
+            for (const agent of experiment.multiAgents) {
+                sum += agent.dist;
+                if (rand <= sum) {
+                    agentId = agent.agent;
+                    break;
+                }
             }
         }
 
@@ -123,7 +133,12 @@ class ExperimentsService {
     async getAllExperimentsByAgentId(agentId: string): Promise<IExperimentLean[]> {
         const result = await ExperimentsModel.find(
             {
-                $or: [{ activeAgent: agentId }, { 'abAgents.agentA': agentId }, { 'abAgents.agentB': agentId }],
+                $or: [
+                    { activeAgent: agentId },
+                    { 'abAgents.agentA': agentId },
+                    { 'abAgents.agentB': agentId },
+                    { 'multiAgents.agent': agentId },
+                ],
             },
             { _id: 1, title: 1 },
         );
