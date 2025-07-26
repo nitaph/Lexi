@@ -42,6 +42,7 @@ git clone https://github.com/Tomer-Lavan/Lexi
 ### Step 3: Install Dependencies
 
 - For the client:
+
   ```bash
   cd client
   npm run setup
@@ -69,13 +70,13 @@ Additionally, the setup script will guide you in creating an administrative user
 
 The setup script automates several important tasks to get your server up and running:
 
-- **Configures Environment Variables**: 
+- **Configures Environment Variables**:
   - It creates a `.env` file containing essential environment variables like your OpenAI API key, MongoDB credentials, and other necessary configurations.
-- **Installs Dependencies**: 
+- **Installs Dependencies**:
   - Executes `npm install` to install all the necessary npm packages that the server requires to function properly.
-- **Builds the Project**: 
+- **Builds the Project**:
   - Runs the build process for your TypeScript code, compiling it and preparing your server for execution.
-- **Initializes Admin User**: 
+- **Initializes Admin User**:
   - Creates an admin user within your system using the credentials you provide, facilitating immediate access to admin-level features.
 
 This comprehensive setup ensures that all necessary components are correctly configured, laying the foundation for a smooth and efficient operation of the server.
@@ -83,19 +84,19 @@ This comprehensive setup ensures that all necessary components are correctly con
 ### Step 4: Running the Project
 
 - For the Client:
-    ```bash
-    cd client
-    npm start
-    ```
+  ```bash
+  cd client
+  npm start
+  ```
 
 **client will run on: http://localhost:3000**
 
 - For the Server:
-    ```bash
+  `bash
     cd server
     npm run dev
-    ``` 
-**server will run on: http://localhost:5000**
+    `
+  **server will run on: http://localhost:5001**
 
 Encountering difficulties with your local environment setup? Consult our [Troubleshooting Guide](TROUBLESHOOTING.md) for assistance in resolving your issues.
 
