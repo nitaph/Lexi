@@ -56,6 +56,7 @@ const getConversationColFields = () => {
         'agreeableness',
         'neuroticism',
         'llmPersonality',
+        'llmSystemPrompt',
         'surveySubmittedAt',
         'conversationNumber',
         'messagesNumber',
@@ -105,6 +106,7 @@ const getConversationsSheetCol = () => [
     { header: 'Agreeableness (50)', key: 'agreeableness' },
     { header: 'Neuroticism (50)', key: 'neuroticism' },
     { header: 'LLM Personality', key: 'llmPersonality' },
+    { header: 'LLM System Prompt', key: 'llmSystemPrompt' },
     { header: 'Survey Submitted At', key: 'surveySubmittedAt' },
     { header: 'User', key: 'username' },
     { header: 'Conversation Number', key: 'conversationNumber' },
@@ -289,6 +291,7 @@ class DataAggregationService {
                         llmPersonality: conversation.metadata.llmPersonality
                             ? `Openness: ${conversation.metadata.llmPersonality.openness}, Conscientiousness: ${conversation.metadata.llmPersonality.conscientiousness}, Extraversion: ${conversation.metadata.llmPersonality.extraversion}, Agreeableness: ${conversation.metadata.llmPersonality.agreeableness}, Neuroticism: ${conversation.metadata.llmPersonality.neuroticism}`
                             : undefined,
+                        llmSystemPrompt: conversation.metadata.llmSystemPrompt,
                         surveySubmittedAt: conversation.metadata.postConversation?.submittedAt,
                         username: {
                             text: user.user.username,

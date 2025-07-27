@@ -36,6 +36,7 @@ export interface IMetadataConversation {
     conversationStrategy: ConversationStrategy;
     humanPersonality?: BigFiveScores;
     llmPersonality?: BigFiveScores;
+    llmSystemPrompt?: string;
     maxMessages: number;
     isFinished: boolean;
 }
