@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { OpenAI } from "openai";
 import { IAgent, Message, UserAnnotation } from "src/types";
+import { IMetadataConversation } from "../types";
 import { computeBigFiveRawScores, complementRawScores } from "../utils/bigFive";
 import { ConversationsModel } from "../models/ConversationsModel";
 import { MetadataConversationsModel } from "../models/MetadataConversationsModel";
@@ -34,7 +35,8 @@ class ConversationsService {
     const messages: any[] = this.getConversationMessages(
       metadataConversation.agent,
       conversation,
-      message
+      message,
+      metadataConversation
     );
     const chatRequest = this.getChatRequest(
       metadataConversation.agent,
@@ -170,6 +172,13 @@ class ConversationsService {
           metadata.conversationStrategy === "mirroring"
             ? human
             : complementRawScores(human);
+        const llm = fields.llmPersonality;
+        fields.llmSystemPrompt =
+          `You are an AI assistant with a distinct personality profile based on the Big Five traits. ` +
+          `Your behavior, tone, and preferences should reflect the following personality characteristics: ` +
+          `Openness: ${llm.openness}, Conscientiousness: ${llm.conscientiousness}, ` +
+          `Extraversion: ${llm.extraversion}, Agreeableness: ${llm.agreeableness}, ` +
+          `Neuroticism: ${llm.neuroticism}`;
       }
 
       await this.updateConversationMetadata(conversationId, fields);
@@ -263,9 +272,14 @@ class ConversationsService {
   private getConversationMessages = (
     agent: IAgent,
     conversation: Message[],
-    message: Message
+    message: Message,
+    metadata?: IMetadataConversation
   ) => {
     const systemPrompt = { role: "system", content: agent.systemStarterPrompt };
+    const personalityPrompt =
+      metadata?.conversationStrategy && metadata.llmSystemPrompt
+        ? { role: "system", content: metadata.llmSystemPrompt }
+        : null;
     const beforeUserMessage = {
       role: "system",
       content: agent.beforeUserSentencePrompt,
@@ -275,14 +289,15 @@ class ConversationsService {
       content: agent.afterUserSentencePrompt,
     };
 
-    const messages = [
-      systemPrompt,
+    const messages = [systemPrompt];
+    if (personalityPrompt) messages.push(personalityPrompt);
+    messages.push(
       ...conversation,
       beforeUserMessage,
       message,
       afterUserMessage,
-      { role: "assistant", content: "" },
-    ];
+      { role: "assistant", content: "" }
+    );
 
     return messages;
   };
