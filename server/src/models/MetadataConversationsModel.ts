@@ -18,6 +18,7 @@ export const metadataConversationSchema = new Schema<IMetadataConversation>(
         conversationStrategy: { type: String, default: 'none' },
         humanPersonality: { type: Object },
         llmPersonality: { type: Object },
+        llmSystemPrompt: { type: String },
         maxMessages: { type: Number },
         isFinished: { type: Boolean, default: () => false },
         agent: { type: agentsSchema, required: true },
