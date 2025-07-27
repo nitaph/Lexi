@@ -44,27 +44,28 @@ const getUserStaticFields = () => {
 };
 
 const getConversationColFields = () => {
-  return new Set([
-    "agent",
-    "username",
-    "userId",
-    "agentTemplate",
-    "conversationStrategy",
-    "openness",
-    "conscientiousness",
-    "extraversion",
-    "agreeableness",
-    "neuroticism",
-    "llmPersonality",
-    "surveySubmittedAt",
-    "conversationNumber",
-    "messagesNumber",
-    "createdAt",
-    "lastMessageDate",
-    "isFinished",
-    "id",
-    "_id",
-  ]);
+    return new Set([
+        'agent',
+        'username',
+        'userId',
+        'agentTemplate',
+        'conversationStrategy',
+        'openness',
+        'conscientiousness',
+        'extraversion',
+        'agreeableness',
+        'neuroticism',
+        'llmPersonality',
+        'llmSystemPrompt',
+        'surveySubmittedAt',
+        'conversationNumber',
+        'messagesNumber',
+        'createdAt',
+        'lastMessageDate',
+        'isFinished',
+        'id',
+        '_id',
+    ]);
 };
 
 const getUserColFields = () => {
@@ -94,24 +95,25 @@ const getUsersSheetCol = () => [
 ];
 
 const getConversationsSheetCol = () => [
-  { header: "Conversation ID", key: "id" },
-  { header: "User ID", key: "userId" },
-  { header: "Agent", key: "agent" },
-  { header: "Agent Template", key: "agentTemplate" },
-  { header: "Personality Strategy", key: "conversationStrategy" },
-  { header: "Openness (50)", key: "openness" },
-  { header: "Conscientiousness (50)", key: "conscientiousness" },
-  { header: "Extraversion (50)", key: "extraversion" },
-  { header: "Agreeableness (50)", key: "agreeableness" },
-  { header: "Neuroticism (50)", key: "neuroticism" },
-  { header: "LLM Personality", key: "llmPersonality" },
-  { header: "Survey Submitted At", key: "surveySubmittedAt" },
-  { header: "User", key: "username" },
-  { header: "Conversation Number", key: "conversationNumber" },
-  { header: "Number Of Messages", key: "messagesNumber" },
-  { header: "Created At", key: "createdAt" },
-  { header: "Last Message Date", key: "lastMessageDate" },
-  { header: "Finished", key: "isFinished" },
+    { header: 'Conversation ID', key: 'id' },
+    { header: 'User ID', key: 'userId' },
+    { header: 'Agent', key: 'agent' },
+    { header: 'Agent Template', key: 'agentTemplate' },
+    { header: 'Personality Strategy', key: 'conversationStrategy' },
+    { header: 'Openness (50)', key: 'openness' },
+    { header: 'Conscientiousness (50)', key: 'conscientiousness' },
+    { header: 'Extraversion (50)', key: 'extraversion' },
+    { header: 'Agreeableness (50)', key: 'agreeableness' },
+    { header: 'Neuroticism (50)', key: 'neuroticism' },
+    { header: 'LLM Personality', key: 'llmPersonality' },
+    { header: 'LLM System Prompt', key: 'llmSystemPrompt' },
+    { header: 'Survey Submitted At', key: 'surveySubmittedAt' },
+    { header: 'User', key: 'username' },
+    { header: 'Conversation Number', key: 'conversationNumber' },
+    { header: 'Number Of Messages', key: 'messagesNumber' },
+    { header: 'Created At', key: 'createdAt' },
+    { header: 'Last Message Date', key: 'lastMessageDate' },
+    { header: 'Finished', key: 'isFinished' },
 ];
 
 const messagesSheetCol = [
@@ -422,24 +424,17 @@ class DataAggregationService {
                         },
                         agentTemplate: agent.condition.systemStarterPrompt,
                         conversationStrategy: conversation.metadata.conversationStrategy,
-                        openness: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.openness
-                            : undefined,
-                        conscientiousness: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.conscientiousness
-                            : undefined,
-                        extraversion: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.extraversion
-                            : undefined,
-                        agreeableness: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.agreeableness
-                            : undefined,
-                        neuroticism: conversation.metadata.humanPersonality
-                            ? conversation.metadata.humanPersonality.neuroticism
-                            : undefined,
+
+                        openness: human?.openness,
+                        conscientiousness: human?.conscientiousness,
+                        extraversion: human?.extraversion,
+                        agreeableness: human?.agreeableness,
+                        neuroticism: human?.neuroticism,
+
                         llmPersonality: conversation.metadata.llmPersonality
                             ? `Openness: ${conversation.metadata.llmPersonality.openness}, Conscientiousness: ${conversation.metadata.llmPersonality.conscientiousness}, Extraversion: ${conversation.metadata.llmPersonality.extraversion}, Agreeableness: ${conversation.metadata.llmPersonality.agreeableness}, Neuroticism: ${conversation.metadata.llmPersonality.neuroticism}`
                             : undefined,
+                        llmSystemPrompt: conversation.metadata.llmSystemPrompt,
                         surveySubmittedAt: conversation.metadata.postConversation?.submittedAt,
                         username: {
                             text: user.user.username,
