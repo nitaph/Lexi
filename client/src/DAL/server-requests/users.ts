@@ -2,12 +2,16 @@ import { AgentType, NewUserInfoType, UserType } from "@models/AppModels";
 import { ApiPaths } from "../constants";
 import axiosInstance from "./AxiosInstance";
 
-export const getActiveUser = async (): Promise<UserType> => {
+export const getActiveUser = async (): Promise<UserType | null> => {
   try {
     const response = await axiosInstance.get(`/${ApiPaths.USERS_PATH}/user`);
     return response.data;
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      console.log("🔒 User not logged in");
+      return null;
+    }
+    throw error; // rethrow other errors
   }
 };
 
@@ -46,6 +50,8 @@ export const login = async (
 export const logout = async (): Promise<void> => {
   try {
     await axiosInstance.post(`/${ApiPaths.USERS_PATH}/logout`);
+    localStorage.removeItem("accessToken");
+
     return;
   } catch (error) {
     throw error;

@@ -12,8 +12,10 @@ import { formsRouter } from "./routers/formsRouter";
 import { usersRouter } from "./routers/usersRouter.router";
 import { usersService } from "./services/users.service";
 
+// Load environment variables
 dotenv.config();
 
+// Connect to MongoDB
 mongoDbProvider.initialize();
 
 const createAdminUser = (username: string, password: string) => {
@@ -38,15 +40,21 @@ const setupServer = () => {
   const app = express();
   app.set("trust proxy", 1);
   app.use(bodyParser.json());
+  app.use(cookieParser());
+
+  // Enable CORS for your frontend (Firebase)
   const corsOptions = {
-    origin: process.env.FRONTEND_URL,
+    origin: process.env.FRONTEND_URL || "https://thesis-nt.web.app",
     credentials: true,
   };
   app.use(cors(corsOptions));
-  app.use(cookieParser());
 
   const PORT = process.env.PORT || 5001;
+
+  // Health check route
   app.use("/health", (req, res) => res.status(200).send("OK"));
+
+  // Register app routers
   app.use("/conversations", conversationsRouter());
   app.use("/experiments", experimentsRouter());
   app.use("/users", usersRouter());
@@ -54,11 +62,18 @@ const setupServer = () => {
   app.use("/dataAggregation", dataAggregationRouter());
   app.use("/forms", formsRouter());
 
+  // 404 handler
+  app.use((req, res) => {
+    res.status(404).json({ error: "Route not found" });
+  });
+
+  // Start the server
   app.listen(PORT, () => {
-    console.log(`Server started on http://localhost:${PORT}`);
+    console.log(`✅ Server started on http://localhost:${PORT}`);
   });
 };
 
+// Handle CLI command or start the server
 if (process.argv[2] === "create-user") {
   const [, , , username, password] = process.argv;
   createAdminUser(username, password);
