@@ -44,28 +44,27 @@ const getUserStaticFields = () => {
 };
 
 const getConversationColFields = () => {
-    return new Set([
-        'agent',
-        'username',
-        'userId',
-        'agentTemplate',
-        'conversationStrategy',
-        'openness',
-        'conscientiousness',
-        'extraversion',
-        'agreeableness',
-        'neuroticism',
-        'llmPersonality',
-        'llmSystemPrompt',
-        'surveySubmittedAt',
-        'conversationNumber',
-        'messagesNumber',
-        'createdAt',
-        'lastMessageDate',
-        'isFinished',
-        'id',
-        '_id',
-    ]);
+  return new Set([
+    "agent",
+    "username",
+    "userId",
+    "agentTemplate",
+    "conversationStrategy",
+    "openness",
+    "conscientiousness",
+    "extraversion",
+    "agreeableness",
+    "neuroticism",
+    "llmPersonality",
+    "surveySubmittedAt",
+    "conversationNumber",
+    "messagesNumber",
+    "createdAt",
+    "lastMessageDate",
+    "isFinished",
+    "id",
+    "_id",
+  ]);
 };
 
 const getUserColFields = () => {
@@ -95,25 +94,24 @@ const getUsersSheetCol = () => [
 ];
 
 const getConversationsSheetCol = () => [
-    { header: 'Conversation ID', key: 'id' },
-    { header: 'User ID', key: 'userId' },
-    { header: 'Agent', key: 'agent' },
-    { header: 'Agent Template', key: 'agentTemplate' },
-    { header: 'Personality Strategy', key: 'conversationStrategy' },
-    { header: 'Openness (50)', key: 'openness' },
-    { header: 'Conscientiousness (50)', key: 'conscientiousness' },
-    { header: 'Extraversion (50)', key: 'extraversion' },
-    { header: 'Agreeableness (50)', key: 'agreeableness' },
-    { header: 'Neuroticism (50)', key: 'neuroticism' },
-    { header: 'LLM Personality', key: 'llmPersonality' },
-    { header: 'LLM System Prompt', key: 'llmSystemPrompt' },
-    { header: 'Survey Submitted At', key: 'surveySubmittedAt' },
-    { header: 'User', key: 'username' },
-    { header: 'Conversation Number', key: 'conversationNumber' },
-    { header: 'Number Of Messages', key: 'messagesNumber' },
-    { header: 'Created At', key: 'createdAt' },
-    { header: 'Last Message Date', key: 'lastMessageDate' },
-    { header: 'Finished', key: 'isFinished' },
+  { header: "Conversation ID", key: "id" },
+  { header: "User ID", key: "userId" },
+  { header: "Agent", key: "agent" },
+  { header: "Agent Template", key: "agentTemplate" },
+  { header: "Personality Strategy", key: "conversationStrategy" },
+  { header: "Openness (50)", key: "openness" },
+  { header: "Conscientiousness (50)", key: "conscientiousness" },
+  { header: "Extraversion (50)", key: "extraversion" },
+  { header: "Agreeableness (50)", key: "agreeableness" },
+  { header: "Neuroticism (50)", key: "neuroticism" },
+  { header: "LLM Personality", key: "llmPersonality" },
+  { header: "Survey Submitted At", key: "surveySubmittedAt" },
+  { header: "User", key: "username" },
+  { header: "Conversation Number", key: "conversationNumber" },
+  { header: "Number Of Messages", key: "messagesNumber" },
+  { header: "Created At", key: "createdAt" },
+  { header: "Last Message Date", key: "lastMessageDate" },
+  { header: "Finished", key: "isFinished" },
 ];
 
 const messagesSheetCol = [
@@ -407,90 +405,10 @@ class DataAggregationService {
           createdAt: user.user.createdAt,
         };
 
-                Object.entries(user.user).forEach(([key, value]) => {
-                    if (!userStaticFields.has(key)) {
-                        userRow[key] = value;
-                    }
-                });
-
-                usersSheet.addRow(userRow);
-                user.conversations.forEach((conversation) => {
-                    const conversationRow = {
-                        id: conversation.metadata._id,
-                        userId: conversation.metadata.userId,
-                        agent: {
-                            text: agent.condition.title,
-                            hyperlink: `#\'Agents\'!A${agentRowIndex + 1}`,
-                        },
-                        agentTemplate: agent.condition.systemStarterPrompt,
-                        conversationStrategy: conversation.metadata.conversationStrategy,
-
-                        openness: human?.openness,
-                        conscientiousness: human?.conscientiousness,
-                        extraversion: human?.extraversion,
-                        agreeableness: human?.agreeableness,
-                        neuroticism: human?.neuroticism,
-
-                        llmPersonality: conversation.metadata.llmPersonality
-                            ? `Openness: ${conversation.metadata.llmPersonality.openness}, Conscientiousness: ${conversation.metadata.llmPersonality.conscientiousness}, Extraversion: ${conversation.metadata.llmPersonality.extraversion}, Agreeableness: ${conversation.metadata.llmPersonality.agreeableness}, Neuroticism: ${conversation.metadata.llmPersonality.neuroticism}`
-                            : undefined,
-                        llmSystemPrompt: conversation.metadata.llmSystemPrompt,
-                        surveySubmittedAt: conversation.metadata.postConversation?.submittedAt,
-                        username: {
-                            text: user.user.username,
-                            hyperlink: `#\'Users\'!A${userRowIndex + 1}`,
-                        },
-                        conversationNumber: conversation.metadata.conversationNumber,
-                        messagesNumber: conversation.metadata.messagesNumber,
-                        createdAt: conversation.metadata.createdAt,
-                        lastMessageDate: conversation.metadata.lastMessageDate,
-                        isFinished: conversation.metadata.isFinished,
-                    };
-
-                    if (conversation.metadata.preConversation) {
-                        Object.entries(conversation.metadata.preConversation).forEach(([key, value]) => {
-                            conversationRow[`pre_${key}`] = value;
-                        });
-                    }
-
-                    if (conversation.metadata.postConversation) {
-                        Object.entries(conversation.metadata.postConversation).forEach(([key, value]) => {
-                            conversationRow[`post_${key}`] = value;
-                        });
-                    }
-
-                    conversationsSheet.addRow(conversationRow);
-
-                    conversation.conversation.forEach((message) => {
-                        messagesSheet.addRow({
-                            conversationId: {
-                                text: conversation.metadata._id,
-                                hyperlink: `#\'Conversations\'!A${conversationRowIndex + 1}`,
-                            },
-                            messageId: message._id,
-                            agent: {
-                                text: agent.condition.title,
-                                hyperlink: `#\'Agents\'!A${agentRowIndex + 1}`,
-                            },
-                            username: {
-                                text: user.user.username,
-                                hyperlink: `#\'Users\'!A${userRowIndex + 1}`,
-                            },
-                            conversationNumber: conversation.metadata.conversationNumber,
-                            content: message.content,
-                            role: message.role,
-                            createdAt: message.createdAt,
-                            messageNumber: message.messageNumber,
-                            userAnnotation: message.userAnnotation,
-                        });
-                    });
-
-                    conversationRowIndex++;
-                });
-
-                userRowIndex++;
-            });
-            agentRowIndex++;
+        Object.entries(user.user).forEach(([key, value]) => {
+          if (!userStaticFields.has(key)) {
+            userRow[key] = value;
+          }
         });
 
         usersSheet.addRow(userRow);
