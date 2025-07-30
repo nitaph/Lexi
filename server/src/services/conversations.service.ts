@@ -275,11 +275,10 @@ class ConversationsService {
     message: Message,
     metadata?: IMetadataConversation
   ) => {
-    const systemPrompt = { role: "system", content: agent.systemStarterPrompt };
-    const personalityPrompt =
-      metadata?.conversationStrategy && metadata.llmSystemPrompt
+    const systemPrompt =
+      metadata?.conversationStrategy && metadata.conversationStrategy !== "none"
         ? { role: "system", content: metadata.llmSystemPrompt }
-        : null;
+        : { role: "system", content: agent.systemStarterPrompt };
     const beforeUserMessage = {
       role: "system",
       content: agent.beforeUserSentencePrompt,
@@ -290,7 +289,6 @@ class ConversationsService {
     };
 
     const messages = [systemPrompt];
-    if (personalityPrompt) messages.push(personalityPrompt);
     messages.push(
       ...conversation,
       beforeUserMessage,
