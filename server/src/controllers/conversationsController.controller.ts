@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 import { conversationsService } from "../services/conversations.service";
 import { requestHandler } from "../utils/requestHandler";
 
-const isProduction =
-  process.env.FRONTEND_URL && !process.env.FRONTEND_URL.includes("localhost");
+const isLocal = process.env.FRONTEND_URL?.includes("localhost");
 
 class ConvesationsController {
   message = requestHandler(
@@ -103,8 +102,8 @@ class ConvesationsController {
         experimentId
       );
       res.cookie("conversationId", conversationId, {
-        secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
+        secure: !isLocal,
+        sameSite: isLocal ? "lax" : "none",
       });
       res.status(200).send(conversationId);
     },

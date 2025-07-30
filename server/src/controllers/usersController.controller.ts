@@ -2,13 +2,11 @@ import { CookieOptions, Request, Response } from "express";
 import { usersService } from "../services/users.service";
 import { requestHandler } from "../utils/requestHandler";
 
-const isProduction =
-  process.env.FRONTEND_URL && !process.env.FRONTEND_URL.includes("localhost");
-
+const isLocal = process.env.FRONTEND_URL?.includes("localhost");
 const cookieConfig: CookieOptions = {
   httpOnly: true,
-  sameSite: isProduction ? "none" : "lax",
-  secure: isProduction,
+  sameSite: isLocal ? "lax" : "none",
+  secure: !isLocal,
   maxAge: 24 * 60 * 60 * 1000,
   path: "/",
 };
@@ -79,8 +77,8 @@ class UsersController {
   logout = requestHandler(async (req: Request, res: Response) => {
     res.clearCookie("token", {
       httpOnly: true,
-      sameSite: isProduction ? "none" : "lax",
-      secure: isProduction,
+      sameSite: isLocal ? "lax" : "none",
+      secure: !isLocal,
     });
     res.status(200).send({ message: "Logged out successfully" });
   });
