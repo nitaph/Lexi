@@ -20,7 +20,7 @@ class UsersController {
       );
 
       res.cookie("token", token, cookieConfig);
-      res.status(200).send(user);
+      res.status(200).json({ user, token });
     },
     (req, res, error) => {
       if (error.code === 11000) {
@@ -57,15 +57,20 @@ class UsersController {
   );
 
   getActiveUser = requestHandler(async (req: Request, res: Response) => {
-    if (!req.cookies || !req.cookies.token) {
+    let token: string | undefined = req.cookies?.token;
+    if (!token && req.headers.authorization) {
+      const [, bearerToken] = req.headers.authorization.split(" ");
+      token = bearerToken;
+    }
+
+    if (!token) {
       throw Object.assign(new Error("No token provided."), { status: 401 });
     }
 
-    const { token } = req.cookies;
     const { user, newToken } = await usersService.getActiveUser(token);
 
     res.cookie("token", newToken, cookieConfig);
-    res.status(200).send(user);
+    res.status(200).json({ user, token: newToken });
   });
 
   logout = requestHandler(async (req: Request, res: Response) => {

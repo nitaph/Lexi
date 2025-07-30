@@ -1,10 +1,15 @@
 import { AgentType, NewUserInfoType, UserType } from "@models/AppModels";
 import { ApiPaths } from "../constants";
 import axiosInstance from "./AxiosInstance";
+import { clearToken, saveToken } from "@utils/auth";
 
 export const getActiveUser = async (): Promise<UserType> => {
   try {
     const response = await axiosInstance.get(`/${ApiPaths.USERS_PATH}/user`);
+    if (response.data?.token) {
+      saveToken(response.data.token);
+      return response.data.user;
+    }
     return response.data;
   } catch (error) {
     throw error;
@@ -20,6 +25,10 @@ export const registerUser = async (
       `/${ApiPaths.USERS_PATH}/create`,
       { userInfo, experimentId }
     );
+    if (response.data?.token) {
+      saveToken(response.data.token);
+      return response.data.user;
+    }
     return response.data;
   } catch (error) {
     throw error;
@@ -37,6 +46,9 @@ export const login = async (
       userPassword,
       experimentId,
     });
+    if (response.data?.token) {
+      saveToken(response.data.token);
+    }
     return response.data;
   } catch (error) {
     throw error;
@@ -46,6 +58,7 @@ export const login = async (
 export const logout = async (): Promise<void> => {
   try {
     await axiosInstance.post(`/${ApiPaths.USERS_PATH}/logout`);
+    clearToken();
     return;
   } catch (error) {
     throw error;
